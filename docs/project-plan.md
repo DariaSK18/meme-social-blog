@@ -25,16 +25,17 @@
        /controllers
        /models
        /services
+       /middleware
+       /utils
     /docs
-       workflow.md
-       team-rules.md
-       branch-strategy.md
+       project-plan.md
+       /wireframes
 ```
 
 - [ ] Initialize npm projects for frontend and backend
 
 - [ ] **Setup development tools**
-  - [ ] Code linter and formatter (ESLint + Prettier)
+  - [ ] Code linter and formatter (ESLint + Prettier) (optional)
   - [ ] Install dependencies (React, Express, database client, etc.)
   - [ ] Setup basic folder scaffolding and placeholder files
 
@@ -53,7 +54,7 @@
 
 - [ ] **Create wireframes**
 
-  - [ ] Draw screens for main pages: Home, Meme Upload, Meme Feed, Profile
+  - [ ] Draw screens for main pages: Home, Meme Upload, Meme Feed, Profile, Login, Sign up
   - [ ] Optional: use Figma or pen & paper
 
 - [ ] **Design database schema**
@@ -63,7 +64,7 @@
 
 - [ ] **Define API endpoints**
   - [ ] User authentication (login/signup)
-  - [ ] Meme CRUD (create, read, delete)
+  - [ ] Meme CRUD (create, read, update, delete)
   - [ ] Likes and comments
   - [ ] Categories and filters
 
@@ -79,20 +80,16 @@
 
 - [ ] **Implement core backend features**
 
-  - [ ] User authentication with JWT
+  - [ ] User authentication with JWT (or passport, session)
   - [ ] CRUD for memes
   - [ ] Like/unlike functionality
   - [ ] Comments API
   - [ ] Categories API
 
-- [ ] **Setup testing**
+<!-- - [ ] **Setup testing**
 
   - [ ] Unit tests for routes and controllers
-  - [ ] Optional: integration tests
-
-- [ ] **Setup CI/CD (optional)**
-  - [ ] Configure GitHub Actions / CI pipeline
-  - [ ] Linting, tests before merge
+  - [ ] Optional: integration tests -->
 
 ---
 
