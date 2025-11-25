@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import errorHandler from "./middleware/errorHandler.mjs";
 import AppError from "./utils/AppError.mjs";
+import routes from "./routes/index.mjs";
 
 dotenv.config()
 
@@ -12,6 +13,8 @@ app.use(express.json());
 // app.get('/', (req, res) => {
 //     console.log(req.originalUrl);
 // })
+
+app.use("/api", routes);
 
 
 app.use((req, res, next) => {
