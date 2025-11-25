@@ -1,10 +1,8 @@
 import { Model, Sequelize, DataTypes } from "sequelize";
-import bcrypt from "bcrypt";
 import sequelize from "../config/connection.mjs";
+import { hashPassword } from "../utils/helpers/hashPassword.mjs";
 
-class User extends Model {
-
-}
+class User extends Model {}
 
 User.init(
   {
@@ -41,15 +39,12 @@ User.init(
   },
   {
     hooks: {
-      beforeCreate: async (newUserData) => {
-        newUserData.password = await bcrypt.hash(newUserData.password, 10);
+      beforeCreate: (newUserData) => {
+        newUserData.password = hashPassword(newUserData.password);
         return newUserData;
       },
-      beforeUpdate: async (updatedUserData) => {
-        updatedUserData.password = await bcrypt.hash(
-          updatedUserData.password,
-          10
-        );
+      beforeUpdate: (updatedUserData) => {
+        updatedUserData.password = hashPassword(updatedUserData.password);
         return updatedUserData;
       },
     },
