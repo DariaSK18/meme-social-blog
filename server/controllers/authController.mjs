@@ -46,22 +46,28 @@ export const createUser = catchAsync(async (req, res, next) => {
 // --- refresh token ---
 
 export const refreshToken = catchAsync(async (req, res) => {
-    const {token} = req.body
-    if(!token) return res.sendStatus(401)
+  const { token } = req.body;
+  if (!token) return res.sendStatus(401);
 
-    const dbToken = await RefreshToken.findOne({where: {token}})
-    if(!dbToken) return res.sendStatus(403)
+  const dbToken = await RefreshToken.findOne({ where: { token } });
+  if (!dbToken) return res.sendStatus(403);
 
   jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
 
     // console.log("decoded refresh:", user);
     const accessToken = generateAccessToken({
-    id: user.id,
-    username: user.username,
-  })
+      id: user.id,
+      username: user.username,
+    });
     res.json({ accessToken });
   });
-})
+});
 
 // --- logout user ---
+
+export const logoutUser = catchAsync(async (req, res) => {
+  const { token } = req.body;
+  await RefreshToken.destroy({ where: { token } });
+  res.sendStatus(204);
+});
