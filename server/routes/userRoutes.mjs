@@ -16,10 +16,10 @@ router
 //   .patch(userController.updateUser)
 //   .delete(userController.deleteUser)
 
-// router
-//   .route("/auth")
-//   .post(userController.loginUser)
+router
+  .route("/auth")
+  .post(authController.loginUser)
 
-// router.route("/logout").post(userController.logoutUser)
+router.route("/logout").post(authController.logoutUser)
 
  export default router;
