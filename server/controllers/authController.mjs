@@ -7,6 +7,7 @@ import {
 import jwt from "jsonwebtoken";
 import { catchAsync } from "../utils/catchAsync.mjs";
 import { compareHashedPassword } from "../utils/helpers/hashPassword.mjs";
+import AppError from "../utils/AppError.mjs";
 
 // --- login user ---
 
@@ -39,6 +40,10 @@ export const createUser = catchAsync(async (req, res, next) => {
   const { username, email, password } = req.body;
   if (!username || !email || !password)
     return next(new AppError("All fields required", 400));
+
+  const existingUser = await User.findOne({where: {email}})
+  if(existingUser) return next(new AppError("Email already in use", 400))
+
   const saved = await User.create({ username, email, password });
   res.status(201).json(saved);
 });
@@ -52,13 +57,15 @@ export const refreshToken = catchAsync(async (req, res) => {
   const dbToken = await RefreshToken.findOne({ where: { token } });
   if (!dbToken) return res.sendStatus(403);
 
-  jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+  jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, async(err, user) => {
     if (err) return res.sendStatus(403);
 
+    const dbUser = await User.findByPk(user.id)
+    if(!dbUser) return res.sendStatus(403)
     // console.log("decoded refresh:", user);
     const accessToken = generateAccessToken({
-      id: user.id,
-      username: user.username,
+      id: dbUser.id,
+      username: dbUser.username,
     });
     res.json({ accessToken });
   });
@@ -68,6 +75,7 @@ export const refreshToken = catchAsync(async (req, res) => {
 
 export const logoutUser = catchAsync(async (req, res) => {
   const { token } = req.body;
-  await RefreshToken.destroy({ where: { token } });
+  const deletedToken = await RefreshToken.destroy({ where: { token } })
+  if(!deletedToken) return res.sendStatus(404)
   res.sendStatus(204);
 });
