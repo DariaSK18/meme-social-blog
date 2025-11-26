@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import errorHandler from "./middleware/errorHandler.mjs";
 import AppError from "./utils/AppError.mjs";
 import routes from "./routes/index.mjs";
+import cookieParser from "cookie-parser";
 
 // --- test
 
@@ -11,6 +12,7 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser())
 
 // --- main page test server ---
 app.get("/", (req, res) => {
