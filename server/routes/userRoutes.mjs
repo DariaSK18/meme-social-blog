@@ -9,12 +9,12 @@ router
  .get(userController.getAllUsers)
  .post(authController.createUser)
 
-// router.route("/:id").get(userController.getOneUser);
+router.route("/:id").get(userController.getOneUser);
 
-// router
-//   .route("/me")
+router
+  .route("/me")
 //   .patch(userController.updateUser)
-//   .delete(userController.deleteUser)
+  .delete(userController.deleteUser)
 
 router
   .route("/auth")
