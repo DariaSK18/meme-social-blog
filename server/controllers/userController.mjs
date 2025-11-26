@@ -1,5 +1,6 @@
 import { catchAsync } from "../utils/catchAsync.mjs";
-import AppError from "../utils/AppError.mjs";
+// import AppError from "../utils/AppError.mjs";
+// import User from "../models/user.mjs";
 import User from "../models/user.mjs";
 
 
@@ -7,6 +8,9 @@ const users = ["Daria", "Burcu", "Anna", "Steven"];
 
 // --- get all users (for checks or admin user only) ---
 export const getAllUsers = catchAsync(async (req, res, next) => {
+  const users = await User.findAll()
+  console.log(users);
+  
   res.status(200).json(users);
 });
 

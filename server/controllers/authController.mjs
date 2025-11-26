@@ -79,8 +79,11 @@ export const refreshToken = catchAsync(async (req, res) => {
 // --- logout user ---
 
 export const logoutUser = catchAsync(async (req, res) => {
-  const { token } = req.body;
+  const token = req.cookies.refreshToken;
+  if(!token) return res.sendStatus(400)
+
   const deletedToken = await RefreshToken.destroy({ where: { token } });
   if (!deletedToken) return res.sendStatus(404);
+  res.clearCookie("refreshToken")
   res.sendStatus(204);
 });
