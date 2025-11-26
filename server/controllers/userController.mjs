@@ -10,13 +10,10 @@ export const getAllUsers = catchAsync(async (req, res, next) => {
   res.status(200).json(users);
 });
 
-// --- register user ---
-export const createUser = catchAsync(async (req, res, next) => {
-  const { username, email, password } = req.body;
-  if (!username || !email || !password)
-    return next(new AppError("All fields required", 400));
-  const saved = await User.create({ username, email, password });
-  res.status(201).json(saved);
-});
+// --- get single user by id ---
+
+// --- update user by id ---
+
+// --- delete user profile ---
 
 
