@@ -5,7 +5,7 @@ import AppError from "./utils/AppError.mjs";
 import routes from "./routes/index.mjs";
 
 // --- test
-import jwt from "jsonwebtoken";
+
 
 dotenv.config();
 
