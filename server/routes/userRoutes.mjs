@@ -20,6 +20,8 @@ router
   .route("/auth")
   .post(authController.loginUser)
 
+router.route("/refresh-token").post(authController.refreshToken)
+
 router.route("/logout").post(authController.logoutUser)
 
  export default router;
