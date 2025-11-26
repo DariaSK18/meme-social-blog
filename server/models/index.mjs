@@ -80,6 +80,26 @@ MemeTag.belongsTo(Tag, {
   as: "tag",
 });
 
+Follow.belongsTo(User, {
+  foreignKey: "follower_id",
+  as: "follower",
+});
+
+Follow.belongsTo(User, {
+  foreignKey: "following_id",
+  as: "following",
+});
+
+User.hasMany(Follow, {
+  foreignKey: "follower_id",
+  as: "following",
+});
+
+User.hasMany(Follow, {
+  foreignKey: "following_id",
+  as: "followers",
+});
+
 export {
   Meme,
   User,

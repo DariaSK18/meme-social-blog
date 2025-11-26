@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Distracted Boyfriend",
+    "description": "When you see a new meme format but you're already using the old one",
+    "category": "Reaction",
+    "image_url": "",
+    "user_id": 1
+  },
+  {
+    "title": "Grumpy Cat",
+    "description": "Grumpy Cat's reaction to Monday mornings",
+    "category": "Animals",
+    "image_url": "",
+    "user_id": 2
+  },
+  {
+    "title": "Success Kid",
+    "description": "When your meme gets 1000 likes",
+    "category": "Wholesome",
+    "image_url": "",
+    "user_id": 3
+  },
+  {
+    "title": "Drake Hotline Bling",
+    "description": "Drake rejecting homework, approving memes",
+    "category": "Reaction",
+    "image_url": "",
+    "user_id": 4
+  },
+  {
+    "title": "Ancient Aliens",
+    "description": "I'm not saying it was aliens... but it was aliens. This meme format? Definitely aliens.",
+    "category": "Pop Culture",
+    "image_url": "",
+    "user_id": 5
+  },
+  {
+    "title": "Surprised Pikachu",
+    "description": "When you realize you've been scrolling memes for 3 hours",
+    "category": "Reaction",
+    "image_url": "",
+    "user_id": 6
+  },
+  {
+    "title": "This Is Fine",
+    "description": "Me trying to explain memes to my parents",
+    "category": "Comics",
+    "image_url": "",
+    "user_id": 7
+  },
+  {
+    "title": "Two Buttons",
+    "description": "Choosing between posting a meme or doing homework",
+    "category": "Choices",
+    "image_url": "",
+    "user_id": 8
+  },
+  {
+    "title": "Is This a Pigeon?",
+    "description": "When someone asks if this is a meme",
+    "category": "Anime",
+    "image_url": "",
+    "user_id": 9
+  },
+  {
+    "title": "One Does Not Simply",
+    "description": "One does not simply stop scrolling memes",
+    "category": "Movies",
+    "image_url": "",
+    "user_id": 10
+  }
+]
