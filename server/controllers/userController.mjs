@@ -2,6 +2,7 @@ import { catchAsync } from "../utils/catchAsync.mjs";
 import AppError from "../utils/AppError.mjs";
 import User from "../models/user.mjs";
 
+
 const users = ["Daria", "Burcu", "Anna", "Steven"];
 
 // --- get all users (for checks or admin user only) ---
@@ -17,3 +18,5 @@ export const createUser = catchAsync(async (req, res, next) => {
   const saved = await User.create({ username, email, password });
   res.status(201).json(saved);
 });
+
+
