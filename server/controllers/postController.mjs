@@ -47,6 +47,20 @@ export const createPost = catchAsync(async (req, res, next) => {
 
 // --- get one post by id ---
 
+export const getOnePost = catchAsync(async (req, res, next) => {
+  const {
+    params: { id },
+  } = req;
+  const post = await Meme.findByPk(id, {
+    include: {
+      model: Tag,
+      through: { attributes: [] },
+    },
+  });
+  if (!post) return next(new AppError("Post not found", 404));
+  res.status(200).json(post);
+});
+
 // --- update a field ---
 
 // --- delete post by id ---
