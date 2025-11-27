@@ -24,4 +24,17 @@ export const getComments = catchAsync(async (req, res, next) => {
 export const createComment = catchAsync(async (req, res, next) => {});
 
 // --- delete your comment ---
-export const deleteComment = catchAsync(async (req, res, next) => {});
+export const deleteComment = catchAsync(async (req, res, next) => {
+  const {
+    params: { id },
+  } = req;
+  const userId = req.user.id;
+
+  const comment = await Comment.findByPk(id);
+  if (!comment) return next(new AppError("Comment not found", 404));
+
+  if (comment.user_id !== userId) return next(new AppError("Not allowed", 403));
+
+  await comment.destroy();
+  res.status(200).json({ msg: "Comment deleted" });
+});
