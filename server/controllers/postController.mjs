@@ -8,12 +8,12 @@ import Like from "../models/like.mjs";
 // --- get all posts ---
 export const getAllPosts = catchAsync(async (req, res, next) => {
   const posts = await Meme.findAll({
-  include: {
-    model: Tag,
-    as: 'tags',
-    through: { attributes: [] },
-  },
-});
+    include: {
+      model: Tag,
+      as: "tags",
+      through: { attributes: [] },
+    },
+  });
   res.status(200).json(posts);
 });
 
@@ -22,10 +22,13 @@ export const getAllPosts = catchAsync(async (req, res, next) => {
 export const createPost = catchAsync(async (req, res, next) => {
   const {
     user,
-    body: { title, description, category, image_url, tags },
+    body: { title, description, category, tags },
   } = req;
   if (!title || !description)
     return next(new AppError("Title and description are required", 400));
+
+  // --- cloudinary img ---
+  const image_url = req.file?.path || null;
 
   const post = await Meme.create({
     title,
@@ -61,7 +64,7 @@ export const getOnePost = catchAsync(async (req, res, next) => {
   const post = await Meme.findByPk(id, {
     include: {
       model: Tag,
-      as: 'tags',
+      as: "tags",
       through: { attributes: [] },
     },
   });
@@ -75,7 +78,7 @@ export const updatePost = catchAsync(async (req, res, next) => {
   const {
     params: { id },
     body: { title, description, category, image_url, tags },
-    user
+    user,
   } = req;
 
   const post = await Meme.findByPk(id);
@@ -128,30 +131,32 @@ export const deletePost = catchAsync(async (req, res, next) => {
 // --- toggle like for post ---
 
 export const toggleLike = catchAsync(async (req, res, next) => {
-  const postId = req.params.id
+  const postId = req.params.id;
   const userId = req.user.id;
 
   const post = await Meme.findByPk(postId);
   if (!post) return next(new AppError("Post not found", 404));
 
-  const existingLike = await Like.findOne({where: {user_id: userId, meme_id: postId}})
+  const existingLike = await Like.findOne({
+    where: { user_id: userId, meme_id: postId },
+  });
 
-  let liked
+  let liked;
 
-  if(existingLike) {
-    await existingLike.destroy()
-    liked = false
-  }else{
+  if (existingLike) {
+    await existingLike.destroy();
+    liked = false;
+  } else {
     await Like.create({
-        user_id: userId,
-        meme_id: postId
-    })
-    liked = true
+      user_id: userId,
+      meme_id: postId,
+    });
+    liked = true;
   }
 
   const likeCount = await Like.count({
-    where: {meme_id: postId}
-  })
+    where: { meme_id: postId },
+  });
 
   res.status(200).json({
     likes: likeCount,
