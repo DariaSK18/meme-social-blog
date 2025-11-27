@@ -125,10 +125,9 @@ export const deletePost = catchAsync(async (req, res, next) => {
 
 // --- toggle like for post ---
 
-// (need to be done)
 export const toggleLike = catchAsync(async (req, res, next) => {
   const postId = req.params.id
-  const userId = req.user._id;
+  const userId = req.user.id;
 
   const post = await Meme.findByPk(postId);
   if (!post) return next(new AppError("Post not found", 404));
