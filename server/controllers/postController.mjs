@@ -5,8 +5,13 @@ import Tag from "../models/tag.mjs";
 import MemeTag from "../models/memeTag.mjs";
 
 // --- get all posts ---
-export const getAllBlogs = catchAsync(async (req, res, next) => {
-  const posts = await Meme.findAll();
+export const getAllPosts = catchAsync(async (req, res, next) => {
+  const posts = await Meme.findAll({
+  include: {
+    model: Tag,
+    through: { attributes: [] },
+  },
+});
   res.status(200).json(posts);
 });
 
@@ -63,6 +68,40 @@ export const getOnePost = catchAsync(async (req, res, next) => {
 
 // --- update a field ---
 
+export const updatePost = catchAsync(async (req, res, next) => {
+  const {
+    params: { id },
+    body: { title, description, category, image_url, tags },
+    user
+  } = req;
+
+  const post = await Meme.findByPk(id);
+  if (!post) return next(new AppError("Post not found", 404));
+  if (post.user_id !== user.id)
+    return next(new AppError("Not the author", 403));
+
+  if (title) post.title = title;
+  if (description) post.description = description;
+  if (category) post.category = category;
+  if (image_url) post.image_url = image_url;
+
+  if (tags && Array.isArray(tags)) {
+    await MemeTag.destroy({ where: { meme_id: post.id } });
+
+    for (const tagName of tags) {
+      const [tag] = await Tag.findOrCreate({
+        where: { tag_name: tagName },
+      });
+      await MemeTag.findOrCreate({
+        where: { meme_id: post.id, tag_id: tag.id },
+      });
+    }
+  }
+
+  const updated = await post.save();
+  res.status(200).json(updated);
+});
+
 // --- delete post by id ---
 
 export const deletePost = catchAsync(async (req, res, next) => {
@@ -75,7 +114,7 @@ export const deletePost = catchAsync(async (req, res, next) => {
   if (!post) return next(new AppError("Post not found", 404));
 
   if (post.user_id !== user.id)
-    return next(new AppError("Not the author", 404));
+    return next(new AppError("Not the author", 403));
 
   await MemeTag.destroy({ where: { meme_id: id } });
   await post.destroy();
