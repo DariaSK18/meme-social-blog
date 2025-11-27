@@ -7,17 +7,17 @@ const router = Router()
 
 router
   .route("/")
-  .get(postController.getAllPosts)
-  .post(authToken, postController.createPost);
+  .get(postController.getAllPosts) // ok
+  .post(authToken, postController.createPost); // ok  (tags dont get added)
 
 router
   .route("/:id")
-  .get(postController.getOnePost)
-  .patch(authToken, isAuthor, postController.updatePost)
-  .delete(authToken, isAuthor, postController.deletePost);
+  .get(postController.getOnePost) // ok
+  .patch(authToken, isAuthor, postController.updatePost) // ok (tags dont get updated)
+  .delete(authToken, isAuthor, postController.deletePost); // ok
 
 router
   .route("/:id/like")
-  .patch(authToken, postController.toggleLike)
+  .patch(authToken, postController.toggleLike) // ok
 
 export default router

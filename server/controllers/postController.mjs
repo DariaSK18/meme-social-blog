@@ -61,6 +61,7 @@ export const getOnePost = catchAsync(async (req, res, next) => {
   const post = await Meme.findByPk(id, {
     include: {
       model: Tag,
+      as: 'tags',
       through: { attributes: [] },
     },
   });
