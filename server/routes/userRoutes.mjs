@@ -13,7 +13,7 @@ router.route("/:id").get(userController.getOneUser);
 
 router
   .route("/me")
-//   .patch(userController.updateUser)
+  .patch(userController.updateUser)
   .delete(userController.deleteUser)
 
 router

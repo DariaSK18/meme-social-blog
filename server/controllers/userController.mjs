@@ -29,6 +29,29 @@ export const getOneUser = catchAsync(async (req, res, next) => {
 
 // --- update user by id ---
 
+export const updateUser = catchAsync(async (req, res, next) => {
+  const {
+    user: {id},
+    body: { username, password, currentPsw },
+  } = req;
+
+  const user = await User.findByPk(id);
+  if (!user) return next(new AppError("User not found", 404));
+  if (currentPsw) {
+    const isMatch = compareHashedPassword(currentPsw, user.password);
+    if (!isMatch) return next(new AppError("Current password incorrect", 400));
+  }
+
+  if (username) user.username = username;
+  if (password) user.password = hashPassword(password);
+
+  // const updated = await User.findByIdAndUpdate(id, user, {new: true});
+  const updated = await user.save();
+  if (!updated) return next(new AppError("User not found", 404));
+  res.status(200).json(updated);
+});
+
+
 // --- delete user profile ---
 
 export const deleteUser = catchAsync(async (req, res, next) => {

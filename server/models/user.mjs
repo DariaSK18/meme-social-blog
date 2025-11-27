@@ -39,13 +39,13 @@ User.init(
   },
   {
     hooks: {
-      beforeCreate: (newUserData) => {
-        newUserData.password = hashPassword(newUserData.password);
-        return newUserData;
+      beforeCreate: (user) => {
+        user.password = hashPassword(user.password);
       },
-      beforeUpdate: (updatedUserData) => {
-        updatedUserData.password = hashPassword(updatedUserData.password);
-        return updatedUserData;
+      beforeUpdate: (user) => {
+        if(user.changed('password')) {
+          user.password = hashPassword(user.password);
+        }
       },
     },
     sequelize,
