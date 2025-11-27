@@ -64,3 +64,23 @@ export const getOnePost = catchAsync(async (req, res, next) => {
 // --- update a field ---
 
 // --- delete post by id ---
+
+export const deletePost = catchAsync(async (req, res, next) => {
+  const {
+    params: { id },
+    user,
+  } = req;
+
+  const post = await Meme.findByPk(id);
+  if (!post) return next(new AppError("Post not found", 404));
+
+  if (post.user_id !== user.id)
+    return next(new AppError("Not the author", 404));
+
+  await MemeTag.destroy({ where: { meme_id: id } });
+  await post.destroy();
+
+  res.status(200).json({ msg: "Post deleted successfully" });
+});
+
+// --- toggle like for post ---
