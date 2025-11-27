@@ -2,17 +2,51 @@ import { catchAsync } from "../utils/catchAsync.mjs";
 import AppError from "../utils/AppError.mjs";
 import Meme from "../models/meme.mjs";
 import Tag from "../models/tag.mjs";
+import MemeTag from "../models/memeTag.mjs";
 
-// --- get all blogs ---
+// --- get all posts ---
 export const getAllBlogs = catchAsync(async (req, res, next) => {
-    const blogs = await Meme.findAll()
-    res.status(200).json(blogs)
-})
+  const posts = await Meme.findAll();
+  res.status(200).json(posts);
+});
 
-// --- create a blog ---
+// --- create a post ---
 
-// --- get one blog by id ---
+export const createPost = catchAsync(async (req, res, next) => {
+  const {
+    user,
+    body: { title, description, category, image_url, tags },
+  } = req;
+  if (!title || !description)
+    return next(new AppError("Title and description are required", 400));
+
+  const post = await Meme.create({
+    title,
+    description,
+    category,
+    image_url,
+    user_id: user.id,
+  });
+
+  if (tags && Array.isArray(tags) && tags.length) {
+    for (let tagName of tags) {
+      const [tag] = await Tag.findOrCreate({
+        where: { tag_name: tagName },
+      });
+
+      await MemeTag.findOrCreate({
+        where: {
+          meme_id: post.id,
+          tag_id: tag.id,
+        },
+      });
+    }
+  }
+  res.status(201).json(post);
+});
+
+// --- get one post by id ---
 
 // --- update a field ---
 
-// --- delete blog by id ---
+// --- delete post by id ---
