@@ -3,34 +3,38 @@ import AppError from "../utils/AppError.mjs";
 import User from "../models/user.mjs";
 import Follow from "../models/follow.mjs";
 
+// --- toggle follow or unfollow user ---
 export const toggleFollow = catchAsync(async (req, res, next) => {
-  const currentUserId = req.params.id
-  const targetUserId = req.user.id;
+  const targetUserId = req.params.id
+  const currentUserId = req.user.id;
 
-  const post = await Meme.findByPk(postId);
-  if (!post) return next(new AppError("Post not found", 404));
+  if(currentUserId.toString() === targetUserId.toString()) return next(new AppError("You can not follow yourself", 400))
 
-  const existingLike = await Like.findOne({where: {user_id: userId, meme_id: postId}})
+  const existing = await Follow.findOne({where: {follower_id: currentUserId, following_id: targetUserId}})
 
-  let liked
+  let following
 
-  if(existingLike) {
-    await existingLike.destroy()
-    liked = false
+  if(existing) {
+    await existing.destroy()
+    following = false
   }else{
-    await Like.create({
-        user_id: userId,
-        meme_id: postId
+    await Follow.create({
+        follower_id: currentUserId,
+        following_id: targetUserId
     })
-    liked = true
+    following = true
   }
 
-  const likeCount = await Like.count({
-    where: {meme_id: postId}
+  const followersCount = await Follow.count({
+    where: {following_id: targetUserId}
+  })
+  const followingCount = await Follow.count({
+    where: {follower_id: currentUserId}
   })
 
   res.status(200).json({
-    likes: likeCount,
-    liked: liked,
+    following,
+    followersCount,
+    followingCount
   });
 });
