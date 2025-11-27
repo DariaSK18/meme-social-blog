@@ -3,6 +3,7 @@ import AppError from "../utils/AppError.mjs";
 import Meme from "../models/meme.mjs";
 import Tag from "../models/tag.mjs";
 import MemeTag from "../models/memeTag.mjs";
+import Like from "../models/like.mjs";
 
 // --- get all posts ---
 export const getAllPosts = catchAsync(async (req, res, next) => {
@@ -126,23 +127,33 @@ export const deletePost = catchAsync(async (req, res, next) => {
 
 // (need to be done)
 export const toggleLike = catchAsync(async (req, res, next) => {
-  const {
-    params: { id },
-  } = req;
+  const postId = req.params.id
   const userId = req.user._id;
 
-  const blog = await Blog.findById(id);
-  if (!blog) return next(new AppError("Blog not found", 404));
+  const post = await Meme.findByPk(postId);
+  if (!post) return next(new AppError("Post not found", 404));
 
-  const index = blog.likes.indexOf(userId);
+  const existingLike = await Like.findOne({where: {user_id: userId, meme_id: postId}})
 
-  if (index === -1) blog.likes.push(userId);
-  else blog.likes.splice(index, 1);
+  let liked
 
-  await blog.save();
+  if(existingLike) {
+    await existingLike.destroy()
+    liked = false
+  }else{
+    await Like.create({
+        user_id: userId,
+        meme_id: postId
+    })
+    liked = true
+  }
+
+  const likeCount = await Like.count({
+    where: {meme_id: postId}
+  })
 
   res.status(200).json({
-    likes: blog.likes.length,
-    liked: index === -1,
+    likes: likeCount,
+    liked: liked,
   });
 });
