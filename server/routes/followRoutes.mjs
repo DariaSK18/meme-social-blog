@@ -6,10 +6,10 @@ const router = Router()
 
 router
   .route("/:id")
-  .patch(authToken, followController.toggleFollow)
+  .patch(authToken, followController.toggleFollow) // ok
 
-router.get("/:id/followers", followController.getFollowers)
+router.get("/:id/followers", followController.getFollowers) // ok
 
-router.get("/:id/following", followController.getFollowing)
+router.get("/:id/following", followController.getFollowing) // ok
 
 export default router
