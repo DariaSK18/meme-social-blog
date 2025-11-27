@@ -10,6 +10,7 @@ export const getAllPosts = catchAsync(async (req, res, next) => {
   const posts = await Meme.findAll({
   include: {
     model: Tag,
+    as: 'tags',
     through: { attributes: [] },
   },
 });

@@ -8,20 +8,20 @@ const router = Router();
 
 router
   .route("/")
-  .get(userController.getAllUsers)
-  .post(authController.createUser);
+  .get(userController.getAllUsers) // ok
+  .post(authController.createUser); // ok
 
-router.route("/:id").get(userController.getOneUser);
+router.route("/:id").get(userController.getOneUser); // ok
 
 router
   .route("/me")
-  .patch(authToken, userController.updateUser)
-  .delete(authToken, userController.deleteUser);
+  .patch(authToken, userController.updateUser) // ok
+  .delete(authToken, userController.deleteUser); // ok
 
-router.route("/login").post(authController.loginUser);
+router.route("/login").post(authController.loginUser); // ok
 
 router.route("/refresh-token").post(authController.refreshToken);
 
-router.route("/logout").post(authController.logoutUser);
+router.route("/logout").post(authController.logoutUser); // ok
 
 export default router;

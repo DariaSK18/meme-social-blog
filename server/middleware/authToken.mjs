@@ -8,10 +8,13 @@ export default (req, res, next) => {
 
   if (!token) return next(new AppError("Not authenticated", 401));
 
-  const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-  if (!decoded)
+  try {
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
     return next(new AppError("Invalid token or expired token", 403));
+  }
+
   // console.log("decoded access:", user);
-  req.user = decoded;
-  next();
 };

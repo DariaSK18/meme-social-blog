@@ -33,7 +33,7 @@ export const getOneUser = catchAsync(async (req, res, next) => {
 export const updateUser = catchAsync(async (req, res, next) => {
   const {
     user: { id },
-    body: { username, password, currentPsw },
+    body: { username, email, password, currentPsw },
   } = req;
 
   const user = await User.findByPk(id);
@@ -46,8 +46,9 @@ export const updateUser = catchAsync(async (req, res, next) => {
     if (!isMatch) return next(new AppError("Current password incorrect", 400));
     if (password) user.password = password;
   }
-  
+
   if (username) user.username = username;
+  if (email) user.email = email;
 
   const updated = await user.save();
   if (!updated) return next(new AppError("User not found", 404));
@@ -63,10 +64,11 @@ export const deleteUser = catchAsync(async (req, res, next) => {
   // delete all his post if user delete profile (implement when the posts done)
   // or change name 'Meme' to 'Post' ???
   await Meme.destroy({ where: { user_id: id } });
+  await RefreshToken.destroy({ where: { user_id: id } });
 
   const deleted = await User.destroy({ where: { id } });
   if (!deleted) return next(new AppError("User not found", 404));
-  await RefreshToken.destroy({ where: { user_id: id } });
+
   res.clearCookie("refreshToken");
   res.status(200).json({ msg: "Account deleted successfully" });
 });
