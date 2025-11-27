@@ -7,7 +7,7 @@ const router = Router()
 
 router
   .route("/")
-  .get(postController.getAllBlogs)
+  .get(postController.getAllPosts)
   .post(authToken, postController.createPost);
 
 router

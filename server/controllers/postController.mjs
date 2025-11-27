@@ -123,3 +123,26 @@ export const deletePost = catchAsync(async (req, res, next) => {
 });
 
 // --- toggle like for post ---
+
+// (need to be done)
+export const toggleLike = catchAsync(async (req, res, next) => {
+  const {
+    params: { id },
+  } = req;
+  const userId = req.user._id;
+
+  const blog = await Blog.findById(id);
+  if (!blog) return next(new AppError("Blog not found", 404));
+
+  const index = blog.likes.indexOf(userId);
+
+  if (index === -1) blog.likes.push(userId);
+  else blog.likes.splice(index, 1);
+
+  await blog.save();
+
+  res.status(200).json({
+    likes: blog.likes.length,
+    liked: index === -1,
+  });
+});
