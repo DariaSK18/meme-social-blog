@@ -60,25 +60,29 @@ Like.belongsTo(Meme, {
   as: "meme",
 });
 
-Meme.hasMany(MemeTag, {
+Meme.belongsToMany(Tag, {
+  through: MemeTag,
   foreignKey: "meme_id",
-  as: "memeTags",
+  otherKey: 'tag_id',
+  as: "tags",
 });
 
-Tag.hasMany(MemeTag, {
+Tag.belongsToMany(Meme, {
+  through: MemeTag,
   foreignKey: "tag_id",
-  as: "memeTags",
+  otherKey: 'meme_id',
+  as: "memes",
 });
 
-MemeTag.belongsTo(Meme, {
-  foreignKey: "meme_id",
-  as: "meme",
-});
+// MemeTag.belongsTo(Meme, {
+//   foreignKey: "meme_id",
+//   as: "meme",
+// });
 
-MemeTag.belongsTo(Tag, {
-  foreignKey: "tag_id",
-  as: "tag",
-});
+// MemeTag.belongsTo(Tag, {
+//   foreignKey: "tag_id",
+//   as: "tag",
+// });
 
 Follow.belongsTo(User, {
   foreignKey: "follower_id",

@@ -17,7 +17,7 @@ Meme.init(
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: true,
+      allowNull: false,
     },
     category: {
       type: DataTypes.TEXT,
@@ -25,7 +25,7 @@ Meme.init(
     },
     image_url: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     user_id: {
       type: DataTypes.INTEGER,
