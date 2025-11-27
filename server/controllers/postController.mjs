@@ -22,13 +22,10 @@ export const getAllPosts = catchAsync(async (req, res, next) => {
 export const createPost = catchAsync(async (req, res, next) => {
   const {
     user,
-    body: { title, description, category, tags },
+    body: { title, description, category, image_url, tags },
   } = req;
   if (!title || !description)
     return next(new AppError("Title and description are required", 400));
-
-  // --- cloudinary img ---
-  const image_url = req.file?.path || null;
 
   const post = await Meme.create({
     title,

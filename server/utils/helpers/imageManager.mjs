@@ -8,8 +8,8 @@ export function  uploadImage(imgPath) {
     .catch(error => console.error(error));
 }
 
-export function  fetchImage(publicId) {
-   return cloudinary.url(publicId, {
-        crop: "scale"
-    })
-}
+// export function  fetchImage(publicId) {
+//    return cloudinary.url(publicId, {
+//         crop: "scale"
+//     })
+// }
