@@ -13,11 +13,11 @@ router.route("/:id").get(userController.getOneUser);
 
 router
   .route("/me")
-//   .patch(userController.updateUser)
+  .patch(userController.updateUser)
   .delete(userController.deleteUser)
 
 router
-  .route("/auth")
+  .route("/login")
   .post(authController.loginUser)
 
 router.route("/refresh-token").post(authController.refreshToken)
