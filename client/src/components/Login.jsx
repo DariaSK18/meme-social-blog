@@ -1,4 +1,4 @@
-import {usestate } from 'react';
+import {useState } from 'react';
 
 // Login component for user authenticatin with error messeg display
 function Login() {
@@ -67,7 +67,8 @@ function Login() {
                 <button type="submit">Login</button>  //submit button
 
             </form>
-            <p>Forgotten password</p> //forgot password link needs to be done not sure yet
+            <p>Forgotten password</p> 
+            //link for forgotten password also need sign up option
 
         </div>
     );
