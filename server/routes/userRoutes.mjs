@@ -17,7 +17,7 @@ router
   .delete(userController.deleteUser)
 
 router
-  .route("/auth")
+  .route("/login")
   .post(authController.loginUser)
 
 router.route("/refresh-token").post(authController.refreshToken)

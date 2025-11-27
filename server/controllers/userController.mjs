@@ -5,6 +5,7 @@ import User from "../models/user.mjs";
 import AppError from "../utils/AppError.mjs";
 import RefreshToken from "../models/refreshToken.mjs";
 import Meme from "../models/meme.mjs";
+import { compareHashedPassword } from "../utils/helpers/hashPassword.mjs";
 
 // const users = ["Daria", "Burcu", "Anna", "Steven"];
 
@@ -20,9 +21,9 @@ export const getAllUsers = catchAsync(async (req, res, next) => {
 
 export const getOneUser = catchAsync(async (req, res, next) => {
   const {
-    body: { id },
+    params: { id },
   } = req;
-  const user = await User.findOne({ where: id });
+  const user = await User.findByPk(id);
   if (!user) return next(new AppError("User not found", 404));
   res.status(200).json(user);
 });
@@ -31,32 +32,33 @@ export const getOneUser = catchAsync(async (req, res, next) => {
 
 export const updateUser = catchAsync(async (req, res, next) => {
   const {
-    user: {id},
+    user: { id },
     body: { username, password, currentPsw },
   } = req;
 
   const user = await User.findByPk(id);
   if (!user) return next(new AppError("User not found", 404));
-  if (currentPsw) {
+
+  if (password) {
+    if (!currentPsw)
+      return next(new AppError("Current password is required", 400));
     const isMatch = compareHashedPassword(currentPsw, user.password);
     if (!isMatch) return next(new AppError("Current password incorrect", 400));
+    if (password) user.password = password;
   }
-
+  
   if (username) user.username = username;
-  if (password) user.password = hashPassword(password);
 
-  // const updated = await User.findByIdAndUpdate(id, user, {new: true});
   const updated = await user.save();
   if (!updated) return next(new AppError("User not found", 404));
   res.status(200).json(updated);
 });
 
-
 // --- delete user profile ---
 
 export const deleteUser = catchAsync(async (req, res, next) => {
   const {
-    body: { id },
+    user: { id },
   } = req;
   // delete all his post if user delete profile (implement when the posts done)
   // or change name 'Meme' to 'Post' ???

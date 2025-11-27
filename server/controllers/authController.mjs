@@ -20,14 +20,8 @@ export const loginUser = catchAsync(async (req, res) => {
   const isValidPassword = compareHashedPassword(password, user.password);
   if (!isValidPassword) return res.status(401).json({ msg: "Wrong password" });
 
-  const accessToken = generateAccessToken({
-    id: user.id,
-    username: user.username,
-  });
-  const refreshToken = generateRefreshToken({
-    id: user.id,
-    username: user.username,
-  });
+  const accessToken = generateAccessToken({ id: user.id });
+  const refreshToken = generateRefreshToken({ id: user.id });
 
   await RefreshToken.create({ token: refreshToken, user_id: user.id });
 
@@ -56,22 +50,31 @@ export const createUser = catchAsync(async (req, res, next) => {
 // --- refresh token ---
 
 export const refreshToken = catchAsync(async (req, res) => {
-  const { token } = req.body;
-  if (!token) return res.sendStatus(401);
+  const oldToken = req.cookies.refreshToken;
+  if (!oldToken) return res.sendStatus(401);
 
-  const dbToken = await RefreshToken.findOne({ where: { token } });
+  const dbToken = await RefreshToken.findOne({ where: { token: oldToken } });
   if (!dbToken) return res.sendStatus(403);
 
-  jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, async (err, user) => {
+  jwt.verify(oldToken, process.env.REFRESH_TOKEN_SECRET, async (err, user) => {
     if (err) return res.sendStatus(403);
 
     const dbUser = await User.findByPk(user.id);
     if (!dbUser) return res.sendStatus(403);
     // console.log("decoded refresh:", user);
-    const accessToken = generateAccessToken({
-      id: dbUser.id,
-      username: dbUser.username,
+    await RefreshToken.destroy({ where: { token: oldToken } });
+    const newRefreshToken = generateRefreshToken({ id: dbUser.id });
+
+    await RefreshToken.create({
+      token: newRefreshToken,
+      user_id: dbUser.id,
     });
+    res.cookie("refreshToken", newRefreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+    const accessToken = generateAccessToken({ id: dbUser.id });
     res.json({ accessToken });
   });
 });
@@ -80,10 +83,10 @@ export const refreshToken = catchAsync(async (req, res) => {
 
 export const logoutUser = catchAsync(async (req, res) => {
   const token = req.cookies.refreshToken;
-  if(!token) return res.sendStatus(400)
+  if (!token) return res.sendStatus(400);
 
   const deletedToken = await RefreshToken.destroy({ where: { token } });
   if (!deletedToken) return res.sendStatus(404);
-  res.clearCookie("refreshToken")
+  res.clearCookie("refreshToken");
   res.sendStatus(204);
 });
