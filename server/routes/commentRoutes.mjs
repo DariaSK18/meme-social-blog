@@ -6,8 +6,8 @@ const router = Router()
 
 router
   .route("/:id")
-  .get(commentController.getComments)
-  .post(authToken, commentController.createComment)
-  .delete(authToken, commentController.deleteComment)
+  .get(commentController.getComments) // ok
+  .post(authToken, commentController.createComment) // ok
+  .delete(authToken, commentController.deleteComment) // ok
 
 export default router
