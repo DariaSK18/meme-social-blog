@@ -8,7 +8,7 @@ const router = Router()
 router
   .route("/")
   .get(postController.getAllPosts) // ok
-  .post(authToken, parser.single("image"), postController.createPost); // ok  (tags dont get added)
+  .post(authToken, postController.createPost); // ok  (tags dont get added)
 
 router
   .route("/:id")

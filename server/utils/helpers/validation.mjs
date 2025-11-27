@@ -1,6 +1,5 @@
 export const signupValidation = {
   username: {
-    bail: true,
     exists: { errorMessage: "Username is required" },
     isString: { errorMessage: "Must be a string" },
     notEmpty: { errorMessage: "Must be not empty" },
@@ -15,7 +14,6 @@ export const signupValidation = {
     trim: true,
   },
   email: {
-    bail: true,
     exists: { errorMessage: "Email is required" },
     isEmail: { errorMessage: "Invalid email" },
     isString: { errorMessage: "Must be a string" },
@@ -24,7 +22,6 @@ export const signupValidation = {
     trim: true,
   },
   password: {
-    bail: true,
     exists: { errorMessage: "Password is required" },
     isString: { errorMessage: "Must be a string" },
     notEmpty: { errorMessage: "Must be not empty" },
@@ -43,7 +40,6 @@ export const signupValidation = {
 
 export const postValidation = {
   title: {
-    bail: true,
     exists: { errorMessage: "Title is required" },
     isString: { errorMessage: "Must be a string" },
     notEmpty: { errorMessage: "Must be not empty" },
@@ -57,26 +53,22 @@ export const postValidation = {
     trim: true,
   },
   description: {
-    bail: true,
     exists: { errorMessage: "Content is required" },
     isString: { errorMessage: "Must be a string" },
     notEmpty: { errorMessage: "Must be not empty" },
     trim: true,
   },
   category: {
-    bail: true,
     optional: true,
     isString: { errorMessage: "Must be a string" },
     notEmpty: { errorMessage: "Must be not empty" },
     trim: true,
   },
   tags: {
-    bail: true,
     optional: true,
     isArray: { errorMessage: "Tags must be an array" },
   },
   "tags.*": {
-    bail: true,
     optional: true,
     isString: { errorMessage: "Must be a string" },
     isLength: {
@@ -136,7 +128,6 @@ export const userPatch = {
 export const postPatch = {
   title: {
     optional: true,
-    bail: true,
     isString: { errorMessage: "Must be a string" },
     notEmpty: { errorMessage: "Must be not empty" },
     isLength: {
@@ -150,25 +141,21 @@ export const postPatch = {
   },
   description: {
     optional: true,
-    bail: true,
     isString: { errorMessage: "Must be a string" },
     notEmpty: { errorMessage: "Must be not empty" },
     trim: true,
   },
   category: {
-    bail: true,
     optional: true,
     isString: { errorMessage: "Must be a string" },
     notEmpty: { errorMessage: "Must be not empty" },
     trim: true,
   },
   tags: {
-    bail: true,
     optional: true,
     isArray: { errorMessage: "Tags must be an array" },
   },
   "tags.*": {
-    bail: true,
     optional: true,
     isString: { errorMessage: "Must be a string" },
     isLength: {
@@ -184,7 +171,6 @@ export const postPatch = {
 
 export const userLogin = {
   email: {
-    bail: true,
     exists: { errorMessage: "Email is required" },
     isEmail: { errorMessage: "Invalid email" },
     isString: { errorMessage: "Must be a string" },
@@ -193,7 +179,6 @@ export const userLogin = {
     trim: true,
   },
   password: {
-    bail: true,
     exists: { errorMessage: "Password is required" },
     isString: { errorMessage: "Must be a string" },
     notEmpty: { errorMessage: "Must be not empty" },
