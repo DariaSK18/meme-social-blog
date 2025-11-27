@@ -2,6 +2,7 @@ import { catchAsync } from "../utils/catchAsync.mjs";
 import AppError from "../utils/AppError.mjs";
 import Meme from "../models/meme.mjs";
 import Comment from "../models/comment.mjs";
+import User from "../models/user.mjs";
 
 // --- get post comments ---
 export const getComments = catchAsync(async (req, res, next) => {
@@ -18,10 +19,28 @@ export const getComments = catchAsync(async (req, res, next) => {
     },
     order: [["createdAt", "DESC"]],
   });
+  res.status(200).json(comments)
 });
 
 // --- create and post comment ---
-export const createComment = catchAsync(async (req, res, next) => {});
+export const createComment = catchAsync(async (req, res, next) => {
+  const {
+    params: { id },
+    body: { text },
+  } = req;
+
+  if (!text) return next(new AppError("Text required", 400));
+
+  const post = await Meme.findByPk(id);
+  if (!post) return next(new AppError("Post not found", 404));
+
+  const comment = await Comment.create({
+    text,
+    meme_id: id,
+    user_id: req.user.id,
+  });
+  res.status(201).json(comment);
+});
 
 // --- delete your comment ---
 export const deleteComment = catchAsync(async (req, res, next) => {
