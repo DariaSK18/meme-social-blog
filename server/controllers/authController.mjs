@@ -8,6 +8,8 @@ import jwt from "jsonwebtoken";
 import { catchAsync } from "../utils/catchAsync.mjs";
 import { compareHashedPassword } from "../utils/helpers/hashPassword.mjs";
 import AppError from "../utils/AppError.mjs";
+import { sendError } from "../utils/helpers/sendError.mjs";
+import { sendResponse } from "../utils/helpers/sendResponse.mjs";
 
 // --- login user ---
 
@@ -15,10 +17,10 @@ export const loginUser = catchAsync(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ where: { email } });
-  if (!user) return res.status(401).json({ msg: "User not found" });
+  if (!user) return sendError(res, 401, "User not found" )
 
   const isValidPassword = compareHashedPassword(password, user.password);
-  if (!isValidPassword) return res.status(401).json({ msg: "Wrong password" });
+  if (!isValidPassword) return sendError(res, 401, "Wrong password")
 
   const accessToken = generateAccessToken({ id: user.id });
   const refreshToken = generateRefreshToken({ id: user.id });
@@ -31,7 +33,7 @@ export const loginUser = catchAsync(async (req, res) => {
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 
-  res.json({ accessToken, refreshToken });
+  sendResponse(res, 200, { accessToken, refreshToken })
 });
 
 // --- register user ---
@@ -44,23 +46,23 @@ export const createUser = catchAsync(async (req, res, next) => {
   if (existingUser) return next(new AppError("Email already in use", 400));
 
   const saved = await User.create({ username, email, password });
-  res.status(201).json(saved);
+  sendResponse(res, 201, saved)
 });
 
 // --- refresh token ---
 
 export const refreshToken = catchAsync(async (req, res) => {
   const oldToken = req.cookies.refreshToken;
-  if (!oldToken) return res.sendStatus(401);
+  if (!oldToken) return sendError(res, 401)
 
   const dbToken = await RefreshToken.findOne({ where: { token: oldToken } });
-  if (!dbToken) return res.sendStatus(403);
+  if (!dbToken) return sendError(res, 403) 
 
   jwt.verify(oldToken, process.env.REFRESH_TOKEN_SECRET, async (err, user) => {
-    if (err) return res.sendStatus(403);
+    if (err) return sendError(res, 403)
 
     const dbUser = await User.findByPk(user.id);
-    if (!dbUser) return res.sendStatus(403);
+    if (!dbUser) return sendError(res, 403)
     // console.log("decoded refresh:", user);
     await RefreshToken.destroy({ where: { token: oldToken } });
     const newRefreshToken = generateRefreshToken({ id: dbUser.id });
@@ -75,7 +77,7 @@ export const refreshToken = catchAsync(async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
     const accessToken = generateAccessToken({ id: dbUser.id });
-    res.json({ accessToken });
+    sendResponse(res, 200, { accessToken })
   });
 });
 
@@ -83,10 +85,10 @@ export const refreshToken = catchAsync(async (req, res) => {
 
 export const logoutUser = catchAsync(async (req, res) => {
   const token = req.cookies.refreshToken;
-  if (!token) return res.sendStatus(400);
+  if (!token) return sendError(res, 400) 
 
   const deletedToken = await RefreshToken.destroy({ where: { token } });
-  if (!deletedToken) return res.sendStatus(404);
+  if (!deletedToken) return sendError(res, 404)
   res.clearCookie("refreshToken");
-  res.sendStatus(204);
+  sendResponse(res, 204)
 });

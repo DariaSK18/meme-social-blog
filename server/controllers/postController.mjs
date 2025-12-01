@@ -4,6 +4,7 @@ import Meme from "../models/meme.mjs";
 import Tag from "../models/tag.mjs";
 import MemeTag from "../models/memeTag.mjs";
 import Like from "../models/like.mjs";
+import { sendResponse } from "../utils/helpers/sendResponse.mjs";
 
 // --- get all posts ---
 export const getAllPosts = catchAsync(async (req, res, next) => {
@@ -14,7 +15,7 @@ export const getAllPosts = catchAsync(async (req, res, next) => {
       through: { attributes: [] },
     },
   });
-  res.status(200).json(posts);
+  sendResponse(res, 200, posts);
 });
 
 // --- create a post ---
@@ -49,7 +50,7 @@ export const createPost = catchAsync(async (req, res, next) => {
       });
     }
   }
-  res.status(201).json(post);
+  sendResponse(res, 201, post);
 });
 
 // --- get one post by id ---
@@ -66,7 +67,7 @@ export const getOnePost = catchAsync(async (req, res, next) => {
     },
   });
   if (!post) return next(new AppError("Post not found", 404));
-  res.status(200).json(post);
+  sendResponse(res, 200, post);
 });
 
 // --- update a field ---
@@ -102,7 +103,7 @@ export const updatePost = catchAsync(async (req, res, next) => {
   }
 
   const updated = await post.save();
-  res.status(200).json(updated);
+  sendResponse(res, 200, updated);
 });
 
 // --- delete post by id ---
@@ -122,7 +123,7 @@ export const deletePost = catchAsync(async (req, res, next) => {
   await MemeTag.destroy({ where: { meme_id: id } });
   await post.destroy();
 
-  res.status(200).json({ msg: "Post deleted successfully" });
+  sendResponse(res, 200, { msg: "Post deleted successfully" });
 });
 
 // --- toggle like for post ---
@@ -154,8 +155,7 @@ export const toggleLike = catchAsync(async (req, res, next) => {
   const likeCount = await Like.count({
     where: { meme_id: postId },
   });
-
-  res.status(200).json({
+  sendResponse(res, 200, {
     likes: likeCount,
     liked: liked,
   });

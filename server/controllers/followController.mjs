@@ -2,6 +2,7 @@ import { catchAsync } from "../utils/catchAsync.mjs";
 import AppError from "../utils/AppError.mjs";
 import User from "../models/user.mjs";
 import Follow from "../models/follow.mjs";
+import { sendResponse } from "../utils/helpers/sendResponse.mjs";
 
 // --- toggle follow or unfollow user ---
 export const toggleFollow = catchAsync(async (req, res, next) => {
@@ -34,8 +35,7 @@ export const toggleFollow = catchAsync(async (req, res, next) => {
   const followingCount = await Follow.count({
     where: { follower_id: currentUserId },
   });
-
-  res.status(200).json({
+  sendResponse(res, 200, {
     following,
     followersCount,
     followingCount,
@@ -57,7 +57,7 @@ export const getFollowers = catchAsync(async (req, res, next) => {
       attributes: ["id", "username", "email"],
     },
   });
-  res.json(followers);
+  sendResponse(res, 200, followers);
 });
 
 // --- get following list ---
@@ -75,5 +75,5 @@ export const getFollowing = catchAsync(async (req, res, next) => {
       attributes: ["id", "username", "email"],
     },
   });
-  res.json(following);
+  sendResponse(res, 200, following);
 });

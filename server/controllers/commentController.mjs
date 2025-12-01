@@ -3,6 +3,7 @@ import AppError from "../utils/AppError.mjs";
 import Meme from "../models/meme.mjs";
 import Comment from "../models/comment.mjs";
 import User from "../models/user.mjs";
+import { sendResponse } from "../utils/helpers/sendResponse.mjs";
 
 // --- get post comments ---
 export const getComments = catchAsync(async (req, res, next) => {
@@ -19,7 +20,7 @@ export const getComments = catchAsync(async (req, res, next) => {
     },
     order: [["createdAt", "DESC"]],
   });
-  res.status(200).json(comments)
+  sendResponse(res, 200, comments);
 });
 
 // --- create and post comment ---
@@ -39,7 +40,7 @@ export const createComment = catchAsync(async (req, res, next) => {
     meme_id: id,
     user_id: req.user.id,
   });
-  res.status(201).json(comment);
+  sendResponse(res, 201, comment);
 });
 
 // --- delete your comment ---
@@ -55,5 +56,5 @@ export const deleteComment = catchAsync(async (req, res, next) => {
   if (comment.user_id !== userId) return next(new AppError("Not allowed", 403));
 
   await comment.destroy();
-  res.status(200).json({ msg: "Comment deleted" });
+  sendResponse(res, 200, { msg: "Comment deleted" });
 });
