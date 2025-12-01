@@ -2,8 +2,9 @@ import app from "./app.mjs";
 import sequelize from "./config/connection.mjs";
 import "./models/index.mjs";
 import { uploadImage } from "./utils/helpers/imageManager.mjs";
-import dotevn from "dotenv";
-dotevn.config();
+// import dotevn from "dotenv";
+
+// dotevn.config();
 
 uploadImage("./img/img.png")
 // const image=fetchImage("")
