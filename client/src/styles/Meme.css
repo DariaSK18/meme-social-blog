@@ -1,6 +1,9 @@
-main {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
+.meme-page {
+  padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  .meme-page {
+    padding: .5rem;
+  }
 }

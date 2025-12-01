@@ -1,0 +1,39 @@
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gap-10 {
+  gap: 10px;
+}
+
+.rounded {
+  border-radius: var(--radius);
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.btn {
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  border: var(--border);
+  background: var(--bg-light);
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}

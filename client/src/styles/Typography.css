@@ -1,0 +1,11 @@
+h1, h2, h3 {
+  font-weight: 600;
+}
+
+.text-muted {
+  color: #777;
+}
+
+.text-center {
+  text-align: center;
+}

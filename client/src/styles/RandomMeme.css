@@ -1,0 +1,13 @@
+.random-meme-box img {
+  width: 100%;
+  border-radius: var(--radius);
+}
+
+.random-meme-button {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 8px;
+  border-radius: var(--radius);
+  border: var(--border);
+  cursor: pointer;
+}

@@ -1,0 +1,109 @@
+/* Position card */
+.login-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f5f5;
+}
+
+/* Centered white card */
+.login-card {
+  width: 360px;
+  padding: 40px 30px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+/* Logo box */
+.login-logo-box {
+  width: 120px;
+  height: 120px;
+  border: 2px solid black;
+  border-radius: 20px;
+  margin: 0 auto 10px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+/* Brand */
+.login-brand {
+  margin-bottom: 25px;
+}
+
+/* Form layout */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.login-form label {
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.login-form input {
+  height: 40px;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 0 10px;
+  font-size: 15px;
+}
+
+/* Sign-in button */
+.login-btn {
+  margin-top: 20px;
+  height: 44px;
+  border: 2px solid black;
+  border-radius: 12px;
+  background: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background: #f0f0f0;
+}
+
+/* Forgotten password */
+.forgot {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 13px;
+}
+
+/* Register section */
+.register-section {
+  margin-top: 25px;
+}
+
+.no-account-text {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.register-btn {
+  width: 100%;
+  height: 40px;
+  border: 2px solid black;
+  background: white;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.register-btn:hover {
+  background: #f0f0f0;
+}
+
+/* Error text */
+.error {
+  color: rgb(180, 0, 0);
+  margin-bottom: 10px;
+}
