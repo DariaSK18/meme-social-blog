@@ -1,11 +1,10 @@
 import { catchAsync } from "../utils/catchAsync.mjs";
-// import AppError from "../utils/AppError.mjs";
-// import User from "../models/user.mjs";
 import User from "../models/user.mjs";
 import AppError from "../utils/AppError.mjs";
 import RefreshToken from "../models/refreshToken.mjs";
 import Meme from "../models/meme.mjs";
 import { compareHashedPassword } from "../utils/helpers/hashPassword.mjs";
+import { sendResponse } from "../utils/helpers/sendResponse.mjs";
 
 // const users = ["Daria", "Burcu", "Anna", "Steven"];
 
@@ -14,7 +13,7 @@ export const getAllUsers = catchAsync(async (req, res, next) => {
   const users = await User.findAll();
   console.log(users);
 
-  res.status(200).json(users);
+  sendResponse(res, 200, users)
 });
 
 // --- get single user by id ---
@@ -25,7 +24,7 @@ export const getOneUser = catchAsync(async (req, res, next) => {
   } = req;
   const user = await User.findByPk(id);
   if (!user) return next(new AppError("User not found", 404));
-  res.status(200).json(user);
+  sendResponse(res, 200, user)
 });
 
 // --- update user by id ---
@@ -52,7 +51,7 @@ export const updateUser = catchAsync(async (req, res, next) => {
 
   const updated = await user.save();
   if (!updated) return next(new AppError("User not found", 404));
-  res.status(200).json(updated);
+  sendResponse(res, 200, updated)
 });
 
 // --- delete user profile ---
@@ -70,5 +69,5 @@ export const deleteUser = catchAsync(async (req, res, next) => {
   if (!deleted) return next(new AppError("User not found", 404));
 
   res.clearCookie("refreshToken");
-  res.status(200).json({ msg: "Account deleted successfully" });
+  sendResponse(res, 200, { msg: "Account deleted successfully" })
 });
