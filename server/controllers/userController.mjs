@@ -1,12 +1,9 @@
 import { catchAsync } from "../utils/catchAsync.mjs";
-// import AppError from "../utils/AppError.mjs";
-// import User from "../models/user.mjs";
 import User from "../models/user.mjs";
 import AppError from "../utils/AppError.mjs";
 import RefreshToken from "../models/refreshToken.mjs";
 import Meme from "../models/meme.mjs";
 import { compareHashedPassword } from "../utils/helpers/hashPassword.mjs";
-import { sendError } from "../utils/helpers/sendError.mjs";
 import { sendResponse } from "../utils/helpers/sendResponse.mjs";
 
 // const users = ["Daria", "Burcu", "Anna", "Steven"];
@@ -28,7 +25,6 @@ export const getOneUser = catchAsync(async (req, res, next) => {
   const user = await User.findByPk(id);
   if (!user) return next(new AppError("User not found", 404));
   sendResponse(res, 200, user)
-  res.status(200).json(user);
 });
 
 // --- update user by id ---
