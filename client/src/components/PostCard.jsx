@@ -17,8 +17,7 @@ export default function PostCard({ post }) {
           className="user__img"
         /> */}
         <FontAwesomeIcon icon={faUser} />
-        {/* <span className="user__username">{post.username}</span> */}
-        Username
+        <span className="user__username">{post.user.username}</span>
       </div>
 
       <div className="post__image">
@@ -36,7 +35,7 @@ export default function PostCard({ post }) {
       </div>
       <div className="post__info">
         <span style={{ color: "green" }} className="post__description">
-          {/* {post.username} */} Username
+          {post.user.username}
         </span>
         <span style={{ color: "green" }}>{post.title}</span>
         <span>{post.description}</span>
