@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHeart,
@@ -11,12 +12,16 @@ import { useAuth } from "../context/AuthContext";
 import { toggleLike } from "../api/postApi";
 
 export default function PostCard({ post }) {
+  const [likesCount, setLikesCount] = useState(post.likesCount);
   const { user } = useAuth();
 
   const handleToggleLike = async () => {
     if (!user) return;
     try {
-      await toggleLike(post.id);
+      console.log("Toggling like for post id:", post.id);
+      const likeStatus = await toggleLike(post.id);
+      console.log("Like status:", likeStatus);
+      setLikesCount(likeStatus.data.likes);
     } catch (err) {
       console.error("Like action failed", err);
     }
@@ -47,7 +52,7 @@ export default function PostCard({ post }) {
           text={<FontAwesomeIcon icon={faHeart} />}
           onClick={handleToggleLike}
         ></Button>{" "}
-        <span>{post.likesCount}</span>
+        <span>{likesCount}</span>
         <Button text={<FontAwesomeIcon icon={faComment} />}></Button>{" "}
         <span>{post.commentsCount}</span>
         <Button text={<FontAwesomeIcon icon={faShare} />}></Button>
