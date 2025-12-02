@@ -17,11 +17,16 @@ export default function PostCard({ post }) {
           className="user__img"
         /> */}
         <FontAwesomeIcon icon={faUser} />
-        <span className="user__username">{post.username}</span>
+        {/* <span className="user__username">{post.username}</span> */}
+        Username
       </div>
 
       <div className="post__image">
-        <img style={{width: "25rem"}} src={post.imageUrl || "/default-post.png"} alt="post" />
+        <img
+          style={{ width: "25rem" }}
+          src={post.image_url || "/default-post.png"}
+          alt="post"
+        />
       </div>
 
       <div className="post__actions">
@@ -30,8 +35,16 @@ export default function PostCard({ post }) {
         <Button text={<FontAwesomeIcon icon={faShare} />}></Button>
       </div>
       <div className="post__info">
-        <span style={{color: "green"}} className="post__description">{post.username}</span>
+        <span style={{ color: "green" }} className="post__description">
+          {/* {post.username} */} Username
+        </span>
+        <span style={{ color: "green" }}>{post.title}</span>
         <span>{post.description}</span>
+      </div>
+      <div className="post__tags">
+        {post.tags?.map((tag) => (
+          <span key={tag.id}>#{tag.tag_name} </span>
+        ))}
       </div>
     </div>
   );
