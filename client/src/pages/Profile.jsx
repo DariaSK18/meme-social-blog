@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { logout as apiLogout } from "../api/authApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser} from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import Button from "../components/Button";
 
 export default function Profile() {
@@ -17,13 +17,15 @@ export default function Profile() {
     async function fetchProfile() {
       try {
         const res = await fetch(`http://localhost:3000/api/user/${user.id}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
-          credentials: "include"
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          credentials: "include",
         });
         if (!res.ok) throw new Error("Failed to fetch profile");
         const data = await res.json();
         console.log(data);
-        
+
         setProfileData(data);
       } catch (err) {
         console.error(err);
@@ -45,8 +47,10 @@ export default function Profile() {
     try {
       const res = await fetch(`http://localhost:3000/api/user/me`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
-        credentials: "include"
+        // headers: {
+        //   Authorization: `Bearer ${accessToken}`,
+        // },
+        credentials: "include",
       });
       if (!res.ok) throw new Error("Failed to delete profile");
       logout();
@@ -71,10 +75,21 @@ export default function Profile() {
       <p>Posts: {profileData.data.memesCount || 0}</p>
 
       <div className="profile__actions">
-        <Button text={'Change Password'} to={"/change-password"} className="profile__logout-btn profile-btn"></Button>
-        <Button text={'Logout'} onClick={handleLogout} className="profile__logout-btn profile-btn"></Button>
-        <Button text={'Delete Profile'} onClick={handleDelete} className="profile__delete-btn profile-btn">
-        </Button>
+        <Button
+          text={"Change Password"}
+          to={"/change-password"}
+          className="profile__logout-btn profile-btn"
+        ></Button>
+        <Button
+          text={"Logout"}
+          onClick={handleLogout}
+          className="profile__logout-btn profile-btn"
+        ></Button>
+        <Button
+          text={"Delete Profile"}
+          onClick={handleDelete}
+          className="profile__delete-btn profile-btn"
+        ></Button>
       </div>
     </div>
   );

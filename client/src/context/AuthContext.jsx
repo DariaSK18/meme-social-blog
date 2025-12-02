@@ -22,6 +22,7 @@ export function AuthProvider({ children }) {
 
         const decoded = parseJwt(data.data.accessToken);
         setUser({ id: decoded.id });
+        localStorage.setItem("accessToken", data.accessToken);
       } catch (err) {
         console.error(err);
         setUser(null);
@@ -42,6 +43,7 @@ export function AuthProvider({ children }) {
 
         const decoded = parseJwt(data.data.accessToken);
         setUser({ id: decoded.id });
+        localStorage.setItem("accessToken", data.accessToken);
       } catch (err) {
         console.error(err);
         setUser(null);
@@ -57,6 +59,7 @@ export function AuthProvider({ children }) {
     const data = await apiLogin(email, password);
 
     setAccessToken(data.accessToken);
+    localStorage.setItem("accessToken", data.accessToken);
 
     const decoded = parseJwt(data.data.accessToken);
     setUser({ id: decoded.id });
@@ -68,6 +71,7 @@ export function AuthProvider({ children }) {
     const data = await apiLogin(email, password);
 
     setAccessToken(data.accessToken);
+    localStorage.setItem("accessToken", data.accessToken);
 
     const decoded = parseJwt(data.data.accessToken);
     setUser({ id: decoded.id });
@@ -78,6 +82,7 @@ export function AuthProvider({ children }) {
     await apiLogout();
     setUser(null);
     setAccessToken(null);
+    localStorage.removeItem("accessToken");
   }
 
   const value = {
