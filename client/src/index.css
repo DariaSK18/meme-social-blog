@@ -75,8 +75,19 @@ button:focus-visible {
   height: 100vh;
   .main{
     flex-grow: 1;
+    padding: 5rem;
+  }
+  .header{
+    position: fixed;
+    top: 0;
+    background: #000;
+    width: 100%;
   }
   .footer{
     flex-grow: 0;
+    position: fixed;
+    bottom: 0;
+    background: #000;
+    width: 100%;
   }
 }
