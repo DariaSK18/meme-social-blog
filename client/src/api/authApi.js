@@ -8,18 +8,43 @@ export async function login(email, password) {
         credentials: "include",
         body: JSON.stringify({ email, password }),
     });
-    if (!res.ok) throw new Error("Login failed");
+    if (!res.ok) {
+        const errorData = await res.json();
+  
+        if (errorData.errors && Array.isArray(errorData.errors)) {
+            const errorMessages = errorData.errors.map(err => err.msg).join(", ");
+            throw new Error(errorMessages);
+        }
+     
+        if (errorData.msg) {
+            throw new Error(errorData.msg);
+        }
+        throw new Error("Login failed");
+    }
     return res.json();
 }
 
 // --- register ---
 export async function register(username, email, password) {
-    const res = await fetch(`${BASE_URL}/api/user`, {
+    const res = await fetch(`${BASE_URL}/api/user/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ username, email, password }),
     });
-    if (!res.ok) throw new Error("Registration failed");
+    if (!res.ok) {
+        const errorData = await res.json();
+        
+        if (errorData.errors && Array.isArray(errorData.errors)) {
+            const errorMessages = errorData.errors.map(err => err.msg).join(", ");
+            throw new Error(errorMessages);
+        }
+     
+        if (errorData.msg) {
+            throw new Error(errorData.msg);
+        }
+        throw new Error("Registration failed");
+    }
     return res.json();
 }
 

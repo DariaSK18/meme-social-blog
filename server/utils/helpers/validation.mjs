@@ -180,16 +180,7 @@ export const userLogin = {
   },
   password: {
     exists: { errorMessage: "Password is required" },
-    isString: { errorMessage: "Must be a string" },
     notEmpty: { errorMessage: "Must be not empty" },
-    isLength: {
-      options: { min: 6 },
-      errorMessage: "Must be at least 6 characters",
-    },
-    matches: {
-      options: /^(?=.*[A-Za-z])(?=.*\d).+$/,
-      errorMessage: "Password must contain at least one letter and one number",
-    },
     trim: true,
     stripLow: true,
   },
