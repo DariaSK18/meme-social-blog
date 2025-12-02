@@ -3,6 +3,7 @@ import User from "../models/user.mjs";
 import AppError from "../utils/AppError.mjs";
 import RefreshToken from "../models/refreshToken.mjs";
 import Meme from "../models/meme.mjs";
+import Follow from "../models/follow.mjs";
 import { compareHashedPassword } from "../utils/helpers/hashPassword.mjs";
 import { sendResponse } from "../utils/helpers/sendResponse.mjs";
 
@@ -22,9 +23,22 @@ export const getOneUser = catchAsync(async (req, res, next) => {
   const {
     params: { id },
   } = req;
-  const user = await User.findByPk(id);
+  const user = await User.findByPk(id, {
+    attributes: ["id", "username", "email", "createdOn"],
+    include: [
+      { model: Follow, as: "followers", attributes: [] },
+      { model: Follow, as: "following", attributes: [] },
+      { model: Meme, as: "memes", attributes: [] }
+    ],
+  });
   if (!user) return next(new AppError("User not found", 404));
-  sendResponse(res, 200, user)
+  const userData = {
+    ...user.toJSON(),
+    followersCount: await user.countFollowers(),
+    followingCount: await user.countFollowing(),
+    memesCount: await user.countMemes(),
+  }
+  sendResponse(res, 200, userData)
 });
 
 // --- update user by id ---
