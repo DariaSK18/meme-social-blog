@@ -26,7 +26,7 @@ export async function register(username, email, password) {
 // --- refresh token ---
 export async function refreshAccessToken() {
     const res = await fetch(`${BASE_URL}/api/user/refresh-token`, {
-        method: "GET",
+        method: "POST",
         credentials: "include",
     });
 
