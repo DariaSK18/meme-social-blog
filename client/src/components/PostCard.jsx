@@ -6,6 +6,7 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import Button from "../components/Button";
+import PostImage from "../assets/default-post.png";
 
 export default function PostCard({ post }) {
   return (
@@ -23,14 +24,16 @@ export default function PostCard({ post }) {
       <div className="post__image">
         <img
           style={{ width: "25rem" }}
-          src={post.image_url || "/default-post.png"}
+          src={
+            post.image_url.trim() !== "" ? post.image_url : PostImage
+          }
           alt="post"
         />
       </div>
 
       <div className="post__actions">
-        <Button text={<FontAwesomeIcon icon={faHeart} />}></Button>
-        <Button text={<FontAwesomeIcon icon={faComment} />}></Button>
+        <Button text={<FontAwesomeIcon icon={faHeart} />}></Button> <span>{post.likesCount}</span>
+        <Button text={<FontAwesomeIcon icon={faComment} />}></Button> <span>{post.commentsCount}</span>
         <Button text={<FontAwesomeIcon icon={faShare} />}></Button>
       </div>
       <div className="post__info">

@@ -39,7 +39,7 @@ export default function Home() {
     <>
       <h1>Home Page</h1>
       <div>
-        {posts.map(post => (<PostCard key={post.id} post={post} />))}
+        {Array.isArray(posts) && posts.map(post => (<PostCard key={post.id} post={post} />))}
       </div>
     </>
   );
