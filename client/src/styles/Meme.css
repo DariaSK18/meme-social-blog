@@ -1,9 +1,0 @@
-.meme-page {
-  padding: 1rem;
-}
-
-@media (max-width: 768px) {
-  .meme-page {
-    padding: .5rem;
-  }
-}

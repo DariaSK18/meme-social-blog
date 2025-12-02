@@ -4,6 +4,7 @@ import errorHandler from "./middleware/errorHandler.mjs";
 import AppError from "./utils/AppError.mjs";
 import routes from "./routes/index.mjs";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 // --- test
 
@@ -19,6 +20,11 @@ app.get("/", (req, res) => {
   console.log(req.originalUrl);
 });
 // -----------------------------
+
+app.use(cors({
+    origin: "http://localhost:5173", //true
+    credentials: true
+}));
 
 app.use("/api", routes);
 
