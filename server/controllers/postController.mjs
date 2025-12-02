@@ -2,20 +2,41 @@ import { catchAsync } from "../utils/catchAsync.mjs";
 import AppError from "../utils/AppError.mjs";
 import Meme from "../models/meme.mjs";
 import Tag from "../models/tag.mjs";
+import User from "../models/user.mjs";
 import MemeTag from "../models/memeTag.mjs";
 import Like from "../models/like.mjs";
+import Comment from "../models/comment.mjs";
 import { sendResponse } from "../utils/helpers/sendResponse.mjs";
+import { fn, col } from "sequelize";
 
 // --- get all posts ---
 export const getAllPosts = catchAsync(async (req, res, next) => {
   const posts = await Meme.findAll({
-    include: {
-      model: Tag,
-      as: "tags",
-      through: { attributes: [] },
-    },
+    include: [
+      {
+        model: Tag,
+        as: "tags",
+        through: { attributes: [] },
+      },
+      {
+        model: User,
+        as: "user",
+        attributes: ["id", "username"],
+      },
+      { model: Like, as: "likes", attributes: ["id"] },
+      { model: Comment, as: "comments", attributes: ["id"]},
+    ],
+    order: [["createdAt", "DESC"]],
   });
-  sendResponse(res, 200, posts);
+  const postsWithCounts = posts.map(post => {
+    const p = post.toJSON();
+    return {
+      ...p,
+      likesCount: p.likes.length,
+      commentsCount: p.comments.length,
+    };
+  });
+  sendResponse(res, 200, postsWithCounts);
 });
 
 // --- create a post ---
