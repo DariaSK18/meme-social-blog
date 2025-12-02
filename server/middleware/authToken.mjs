@@ -3,8 +3,7 @@ import AppError from "../utils/AppError.mjs";
 
 export default (req, res, next) => {
   const authHeader = req.headers["authorization"];
-  const token = authHeader?.split(" ")[1];
-  // || req.cookies.refreshToken;
+  const token = authHeader?.split(" ")[1] || req.cookies.accessToken;
 
   if (!token) return next(new AppError("Not authenticated", 401));
 

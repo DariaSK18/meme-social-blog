@@ -26,7 +26,7 @@ export const loginUser = catchAsync(async (req, res, next) => {
 
   await RefreshToken.create({ token: refreshToken, user_id: user.id });
 
-  res.cookie("refreshToken", refreshToken, {
+  res.cookie("accessToken", accessToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
@@ -87,6 +87,8 @@ export const refreshToken = catchAsync(async (req, res, next) => {
 export const logoutUser = catchAsync(async (req, res, next) => {
   const token = req.cookies.refreshToken;
   if (!token) return next(new AppError("Bad request", 400)); 
+  console.log(token);
+  
 
   const deletedToken = await RefreshToken.destroy({ where: { token } });
   if (!deletedToken) return next(new AppError("Not found", 404)); 
