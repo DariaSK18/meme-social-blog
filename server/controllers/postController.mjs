@@ -2,6 +2,7 @@ import { catchAsync } from "../utils/catchAsync.mjs";
 import AppError from "../utils/AppError.mjs";
 import Meme from "../models/meme.mjs";
 import Tag from "../models/tag.mjs";
+import User from "../models/user.mjs";
 import MemeTag from "../models/memeTag.mjs";
 import Like from "../models/like.mjs";
 import { sendResponse } from "../utils/helpers/sendResponse.mjs";
@@ -9,11 +10,18 @@ import { sendResponse } from "../utils/helpers/sendResponse.mjs";
 // --- get all posts ---
 export const getAllPosts = catchAsync(async (req, res, next) => {
   const posts = await Meme.findAll({
-    include: {
-      model: Tag,
-      as: "tags",
-      through: { attributes: [] },
-    },
+    include: [
+      {
+        model: Tag,
+        as: "tags",
+        through: { attributes: [] },
+      },
+      {
+        model: User,
+        as: "user",
+        attributes: ["id", "username"],
+      },
+    ],
   });
   sendResponse(res, 200, posts);
 });
