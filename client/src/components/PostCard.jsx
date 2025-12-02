@@ -7,10 +7,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Button from "../components/Button";
 import PostImage from "../assets/default-post.png";
-import { useAuth } from "../context/AuthContext";
+// import { useAuth } from "../context/AuthContext";
 
 export default function PostCard({ post }) {
-  const { user, logout } = useAuth();
+  // const { user, logout } = useAuth();
   return (
     <div className="post">
       <div className="post__user user">

@@ -8,13 +8,7 @@ import Button from "../components/Button";
 
 export default function Profile() {
   const { user, logout } = useAuth();
-  const [profileData, setProfileData] = useState({
-  username: "Daria",
-  email: "daria@test.com",
-  followingCount: 5,
-  followersCount: 10,
-  postsCount: 3
-});
+  const [profileData, setProfileData] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,6 +22,8 @@ export default function Profile() {
         });
         if (!res.ok) throw new Error("Failed to fetch profile");
         const data = await res.json();
+        console.log(data);
+        
         setProfileData(data);
       } catch (err) {
         console.error(err);
@@ -68,11 +64,11 @@ export default function Profile() {
         className="profile__image"
       />  */}
       <FontAwesomeIcon icon={faUser} />
-      <h2>{profileData.username}</h2>
-      <p>Email: {profileData.email}</p>
-      <p>Following: {profileData.followingCount || 0}</p>
-      <p>Followers: {profileData.followersCount || 0}</p>
-      <p>Posts: {profileData.postsCount || 0}</p>
+      <h2>{profileData.data.username}</h2>
+      <p>Email: {profileData.data.email}</p>
+      <p>Following: {profileData.data.followingCount || 0}</p>
+      <p>Followers: {profileData.data.followersCount || 0}</p>
+      <p>Posts: {profileData.data.memesCount || 0}</p>
 
       <div className="profile__actions">
         <Button text={'Change Password'} to={"/change-password"} className="profile__logout-btn profile-btn"></Button>
