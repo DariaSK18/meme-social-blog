@@ -59,7 +59,7 @@ export function AuthProvider({ children }) {
     const data = await apiLogin(email, password);
 
     setAccessToken(data.accessToken);
-    localStorage.setItem("accessToken", data.accessToken);
+    localStorage.setItem("accessToken", data.data.accessToken);
 
     const decoded = parseJwt(data.data.accessToken);
     setUser({ id: decoded.id });
