@@ -5,16 +5,21 @@ import {
   faComment,
   faShare,
   faUser,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import Button from "../components/Button";
 import { useAuth } from "../context/AuthContext";
 import { toggleLike } from "../api/postApi";
+import Alert from "./Alert";
+import "../styles/postCard.css";
 
 const DEFAULT_POST_IMAGE = "https://i.imgflip.com/1bhk.jpg";
 
-export default function PostCard({ post }) {
+export default function PostCard({ post, onDelete }) {
   const [likesCount, setLikesCount] = useState(post.likesCount);
+  const [showConfirmAlert, setShowConfirmAlert] = useState(false);
   const { user } = useAuth();
+  const canDelete = user && post.user_id === user.id;
 
   const handleToggleLike = async () => {
     if (!user) return;
@@ -28,49 +33,89 @@ export default function PostCard({ post }) {
     }
   };
 
+  const handleDeleteClick = () => {
+    setShowConfirmAlert(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setShowConfirmAlert(false);
+    if (onDelete) {
+      await onDelete(post.id);
+    }
+  };
+
   return (
-    <div className="post">
-      <div className="post-user user">
-        {/* <img
-          src={post.userAvatar}
-          alt={post.username}
-          className="user-img"
-        /> */}
-        <FontAwesomeIcon icon={faUser} />
-        <span className="user-username">{post.user.username}</span>
-      </div>
+    <>
+      {showConfirmAlert && (
+        <div className="post-confirm-container">
+          <Alert
+            type="error"
+            message="Are you sure you want to delete this post?"
+            onClose={() => setShowConfirmAlert(false)}
+          />
+          <div className="post-confirm-buttons">
+            <button
+              onClick={handleConfirmDelete}
+              className="post-confirm-delete-btn"
+            >
+              Delete
+            </button>
+            <button
+              onClick={() => setShowConfirmAlert(false)}
+              className="post-confirm-cancel-btn"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+      <div className="post">
+        <div className="post-user user">
+          <FontAwesomeIcon icon={faUser} />
+          <span className="user-username">{post.user.username}</span>
+          {canDelete && (
+            <button
+              onClick={handleDeleteClick}
+              className="post-delete-btn"
+              aria-label="Delete post"
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+          )}
+        </div>
 
-      <div className="post-image">
-        <img
-          src={
-            post.image_url && post.image_url.trim() !== ""
-              ? post.image_url
-              : DEFAULT_POST_IMAGE
-          }
-          alt="post"
-        />
-      </div>
+        <div className="post-image">
+          <img
+            src={
+              post.image_url && post.image_url.trim() !== ""
+                ? post.image_url
+                : DEFAULT_POST_IMAGE
+            }
+            alt="post"
+          />
+        </div>
 
-      <div className="post-actions">
-        <Button
-          text={<FontAwesomeIcon icon={faHeart} />}
-          onClick={handleToggleLike}
-        ></Button>{" "}
-        <span>{likesCount}</span>
-        <Button text={<FontAwesomeIcon icon={faComment} />}></Button>{" "}
-        <span>{post.commentsCount}</span>
-        <Button text={<FontAwesomeIcon icon={faShare} />}></Button>
+        <div className="post-actions">
+          <Button
+            text={<FontAwesomeIcon icon={faHeart} />}
+            onClick={handleToggleLike}
+          ></Button>{" "}
+          <span>{likesCount}</span>
+          <Button text={<FontAwesomeIcon icon={faComment} />}></Button>{" "}
+          <span>{post.commentsCount}</span>
+          <Button text={<FontAwesomeIcon icon={faShare} />}></Button>
+        </div>
+        <div className="post-info">
+          <span className="post-username">{post.user.username}</span>
+          {post.title && <span className="post-title">{post.title}</span>}
+          <span className="post-description">{post.description}</span>
+        </div>
+        <div className="post-tags">
+          {post.tags?.map((tag) => (
+            <span key={tag.id}>#{tag.tag_name} </span>
+          ))}
+        </div>
       </div>
-      <div className="post-info">
-        <span className="post-username">{post.user.username}</span>
-        {post.title && <span className="post-title">{post.title}</span>}
-        <span className="post-description">{post.description}</span>
-      </div>
-      <div className="post-tags">
-        {post.tags?.map((tag) => (
-          <span key={tag.id}>#{tag.tag_name} </span>
-        ))}
-      </div>
-    </div>
+    </>
   );
 }
