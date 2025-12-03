@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import Alert from "../components/Alert";
 import "../styles/Login.css";
 
 export default function Register() {
@@ -8,6 +9,7 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [alert, setAlert] = useState(null);
 
   const navigate = useNavigate();
   const { register } = useAuth();
@@ -16,7 +18,7 @@ export default function Register() {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      setAlert({ type: "error", message: "Passwords do not match" });
       return;
     }
 
@@ -24,12 +26,20 @@ export default function Register() {
       await register(username, email, password);
       navigate("/");
     } catch (err) {
-      alert(err.message);
+      setAlert({ type: "error", message: err.message });
     }
   };
 
   return (
     <div className="login-container">
+      {alert && (
+        <Alert
+          type={alert.type}
+          message={alert.message}
+          onClose={() => setAlert(null)}
+          fixed
+        />
+      )}
       <div className="login-box">
         <h1>Sign Up</h1>
 
