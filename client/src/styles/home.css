@@ -31,7 +31,9 @@
 .create-post-header h2 {
   margin: 0;
   font-size: 24px;
-  color: #252525;
+  font-weight: 600;
+  font-style: italic;
+  color: #dc4d34;
 }
 
 .create-post-toggle-icon {
