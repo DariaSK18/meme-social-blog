@@ -12,26 +12,25 @@ import { useAuth } from "../context/AuthContext";
 import { toggleLike } from "../api/postApi";
 import { useNavigate } from "react-router-dom";
 import Alert from "./Alert";
+import CommentsPopup from "./CommentsPopup";
 import "../styles/postCard.css";
-
 
 const DEFAULT_POST_IMAGE = "https://i.imgflip.com/1bhk.jpg";
 
 export default function PostCard({ post, onDelete }) {
   const [likesCount, setLikesCount] = useState(post.likesCount);
+  const [commentsCount, setCommentsCount] = useState(post.commentsCount);
   const [showConfirmAlert, setShowConfirmAlert] = useState(false);
+  const [showComments, setShowComments] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
 
   const canDelete = user && post.user_id === user.id;
 
-
   const handleToggleLike = async () => {
     if (!user) return;
     try {
-      console.log("Toggling like for post id:", post.id);
       const likeStatus = await toggleLike(post.id);
-      console.log("Like status:", likeStatus);
       setLikesCount(likeStatus.data.likes);
     } catch (err) {
       console.error("Like action failed", err);
@@ -44,9 +43,7 @@ export default function PostCard({ post, onDelete }) {
 
   const handleConfirmDelete = async () => {
     setShowConfirmAlert(false);
-    if (onDelete) {
-      await onDelete(post.id);
-    }
+    if (onDelete) await onDelete(post.id);
   };
 
   return (
@@ -74,6 +71,7 @@ export default function PostCard({ post, onDelete }) {
           </div>
         </div>
       )}
+
       <div className="post">
         <div className="post-user user">
           <FontAwesomeIcon icon={faUser} />
@@ -91,36 +89,49 @@ export default function PostCard({ post, onDelete }) {
 
         <div className="post-image">
           <img
-            src={
-              post.image_url && post.image_url.trim() !== ""
-                ? post.image_url
-                : DEFAULT_POST_IMAGE
-            }
+            src={post.image_url?.trim() ? post.image_url : DEFAULT_POST_IMAGE}
             alt="post"
           />
         </div>
 
-      <div className="post-actions">
-        <Button
-          text={<FontAwesomeIcon icon={faHeart} />}
-          onClick={handleToggleLike}
-        ></Button>{" "}
-        <span>{likesCount}</span>
-        <Button text={<FontAwesomeIcon icon={faComment} />}></Button>{" "}
-        <span>{post.commentsCount}</span>
-        <Button text={<FontAwesomeIcon icon={faShare} />}></Button>
+        <div className="post-actions">
+          <Button
+            text={<FontAwesomeIcon icon={faHeart} />}
+            onClick={handleToggleLike}
+          />
+          <span>{likesCount}</span>
+          <Button
+            text={<FontAwesomeIcon icon={faComment} />}
+            onClick={() => setShowComments(true)}
+          />
+          <span>{commentsCount}</span>
+          <Button text={<FontAwesomeIcon icon={faShare} />} />
+        </div>
+
+        <div className="post-info">
+          <span className="post-username">{post.user.username}</span>
+          {post.title && <span className="post-title">{post.title}</span>}
+          <span className="post-description">{post.description}</span>
+        </div>
+
+        <div className="post-tags">
+          {post.tags?.map((tag) => (
+            <span
+              key={tag.id}
+              onClick={() => navigate(`/?tag=${tag.tag_name}`)}
+            >
+              #{tag.tag_name}{" "}
+            </span>
+          ))}
+        </div>
       </div>
-      <div className="post-info">
-        <span className="post-username">{post.user.username}</span>
-        {post.title && <span className="post-title">{post.title}</span>}
-        <span className="post-description">{post.description}</span>
-      </div>
-      <div className="post-tags">
-        {post.tags?.map((tag) => (
-          <span key={tag.id} onClick={() => navigate(`/?tag=${tag.tag_name}`)}>#{tag.tag_name} </span>
-        ))}
-      </div>
-      </div>
+      {showComments && (
+        <CommentsPopup
+          postId={post.id}
+          handleClose={() => setShowComments(false)}
+          handleNewComment={() => setCommentsCount((prev) => prev + 1)}
+        />
+      )}
     </>
   );
 }
