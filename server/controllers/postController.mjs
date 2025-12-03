@@ -7,7 +7,7 @@ import MemeTag from "../models/memeTag.mjs";
 import Like from "../models/like.mjs";
 import Comment from "../models/comment.mjs";
 import { sendResponse } from "../utils/helpers/sendResponse.mjs";
-import { fn, col } from "sequelize";
+// import { fn, col } from "sequelize";
 
 // --- get all posts ---
 export const getAllPosts = catchAsync(async (req, res, next) => {

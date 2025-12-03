@@ -1,11 +1,12 @@
 import { catchAsync } from "../utils/catchAsync.mjs";
 import User from "../models/user.mjs";
 import AppError from "../utils/AppError.mjs";
-import RefreshToken from "../models/refreshToken.mjs";
+// import RefreshToken from "../models/refreshToken.mjs";
 import Meme from "../models/meme.mjs";
 import Follow from "../models/follow.mjs";
 import { compareHashedPassword } from "../utils/helpers/hashPassword.mjs";
 import { sendResponse } from "../utils/helpers/sendResponse.mjs";
+// import passport from "passport";
 
 // const users = ["Daria", "Burcu", "Anna", "Steven"];
 
@@ -20,9 +21,14 @@ export const getAllUsers = catchAsync(async (req, res, next) => {
 // --- get single user by id ---
 
 export const getOneUser = catchAsync(async (req, res, next) => {
-  const {
-    params: { id },
-  } = req;
+  // const {
+  //   params: { id },
+  // } = req;
+  let id = req.params.id;
+  if (id === "me") {
+    if (!req.user) return next(new AppError("Not authenticated", 401));
+    id = req.user.id;
+  }
   const user = await User.findByPk(id, {
     attributes: ["id", "username", "email", "createdOn"],
     include: [
@@ -77,11 +83,11 @@ export const deleteUser = catchAsync(async (req, res, next) => {
   // delete all his post if user delete profile (implement when the posts done)
   // or change name 'Meme' to 'Post' ???
   await Meme.destroy({ where: { user_id: id } });
-  await RefreshToken.destroy({ where: { user_id: id } });
+  // await RefreshToken.destroy({ where: { user_id: id } });
 
   const deleted = await User.destroy({ where: { id } });
   if (!deleted) return next(new AppError("User not found", 404));
 
-  res.clearCookie("refreshToken");
+  // res.clearCookie("refreshToken");
   sendResponse(res, 200, { msg: "Account deleted successfully" })
 });
