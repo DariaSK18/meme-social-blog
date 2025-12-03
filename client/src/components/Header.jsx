@@ -9,22 +9,30 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "../styles/header.css";
 import Button from "../components/Button";
+import { useState } from "react";
 
 export default function Header() {
   const { user, logout } = useAuth();
   const location = useLocation();
+  const [query, setQuery] = useState("");
 
   const isActive = (path) => location.pathname === path;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-   const handleLogout = async () => {
-      try {
-        await logout();
-      } finally {
-        logout();
-        navigate("/");
-      }
-    };
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } finally {
+      logout();
+      navigate("/");
+    }
+  };
+  const handleSearch = (e) => {
+    if (e.key === "Enter" && query.trim()) {
+      navigate(`/?search=${query}`);
+      setQuery("");
+    }
+  };
 
   return (
     <header className="header">
@@ -66,7 +74,9 @@ export default function Header() {
       <div className="header-right">
         <div className="header-search">
           <FontAwesomeIcon icon={faSearch} className="header-search-icon" />
-          <input type="text" placeholder="Search memes..." />
+          <input type="text" placeholder="Search memes..." value={query}
+  onChange={(e) => setQuery(e.target.value)}
+  onKeyDown={handleSearch}/>
         </div>
         {!user ? (
           <div className="header-auth">
@@ -82,9 +92,11 @@ export default function Header() {
           </div>
         ) : (
           <div className="header-user">
-            <Button text={"Logout"}
-          onClick={handleLogout} className="header-logout-btn">
-            </Button>
+            <Button
+              text={"Logout"}
+              onClick={handleLogout}
+              className="header-logout-btn"
+            ></Button>
           </div>
         )}
       </div>
