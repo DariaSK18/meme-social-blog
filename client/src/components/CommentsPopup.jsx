@@ -32,7 +32,7 @@ export default function CommentsPopup({
       console.error("Failed to fetch comments:", err);
       setComments([]);
     }
-  };
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();

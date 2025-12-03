@@ -40,7 +40,7 @@ export default function Profile() {
 
   const handleDelete = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/user/me`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/me`, {
         method: "DELETE",
         credentials: "include",
       });

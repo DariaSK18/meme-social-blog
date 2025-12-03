@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export async function getPosts(page = 1, limit = 10) {
   const res = await fetch(`${BASE_URL}/api/post?page=${page}&limit=${limit}`, {

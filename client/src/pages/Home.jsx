@@ -40,11 +40,8 @@ export default function Home() {
         if (search) params.append("search", search);
         if (tag) params.append("tag", tag);
 
-        const url = `http://localhost:3000/api/post?${params.toString()}`;
+        const url = `${import.meta.env.VITE_API_URL}/api/post?${params.toString()}`;
         const res = await fetch(url);
-        // const res = await fetch(
-        //   `http://localhost:3000/api/post?page=${currentPage}&limit=10`
-        // );
         const data = await res.json();
 
         if (data.data && data.data.posts) {
@@ -67,7 +64,7 @@ export default function Home() {
       await deletePost(postId);
       setAlert({ type: "success", message: "Post deleted" });
       const res = await fetch(
-        `http://localhost:3000/api/post?page=${currentPage}&limit=10`
+        `${import.meta.env.VITE_API_URL}/api/post?page=${currentPage}&limit=10`
       );
       const data = await res.json();
       if (data.data && data.data.posts) {
@@ -131,7 +128,7 @@ export default function Home() {
       setAlert({ type: "success", message: "Post created successfully!" });
 
       const res = await fetch(
-        `http://localhost:3000/api/post?page=${currentPage}&limit=10`
+        `${import.meta.env.VITE_API_URL}/api/post?page=${currentPage}&limit=10`
       );
       const data = await res.json();
 
