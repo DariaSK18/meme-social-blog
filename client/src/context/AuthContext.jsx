@@ -65,6 +65,15 @@ if (res?.data?.user) {
     }
   }
 
+  const changePassword = async (currentPassword, newPassword) => {
+  const res = await fetch("/api/user/change-password", {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ currentPassword, newPassword }),
+  });
+  if (!res.ok) throw new Error("Failed to change password");
+};
+
   const value = {
     user,
     login,
@@ -72,6 +81,7 @@ if (res?.data?.user) {
     logout,
     isAuthenticated: !!user,
     loading,
+    changePassword
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
