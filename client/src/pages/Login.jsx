@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import Alert from "../components/Alert";
 import "../styles/Login.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [alert, setAlert] = useState(null);
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -16,12 +18,20 @@ export default function Login() {
       await login(email, password);
       navigate("/");
     } catch (err) {
-      alert(err.message);
+      setAlert({ type: "error", message: err.message });
     }
   };
 
   return (
     <div className="login-container">
+      {alert && (
+        <Alert
+          type={alert.type}
+          message={alert.message}
+          onClose={() => setAlert(null)}
+          fixed
+        />
+      )}
       <div className="login-box">
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>

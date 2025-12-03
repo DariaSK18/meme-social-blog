@@ -1,0 +1,57 @@
+.post-confirm-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  max-width: 500px;
+  width: calc(100% - 40px);
+}
+
+.post-confirm-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.post-confirm-delete-btn,
+.post-confirm-cancel-btn {
+  padding: 8px 16px;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.post-confirm-delete-btn {
+  background: #dc4d34;
+}
+
+.post-confirm-delete-btn:hover {
+  background: #b83d25;
+}
+
+.post-confirm-cancel-btn {
+  background: #ccc;
+}
+
+.post-confirm-cancel-btn:hover {
+  background: #aaa;
+}
+
+.post-delete-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #dc4d34;
+  font-size: 16px;
+  padding: 4px 8px;
+}
+
+.post-delete-btn:hover {
+  opacity: 0.8;
+}
+

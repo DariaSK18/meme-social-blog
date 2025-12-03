@@ -1,10 +1,11 @@
 import PostCard from "../components/PostCard";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { createPost } from "../api/postApi";
+import { createPost, deletePost } from "../api/postApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../components/Pagination";
+import Alert from "../components/Alert";
 import "../styles/home.css";
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState(null);
+  const [alert, setAlert] = useState(null);
   const { user } = useAuth();
   const [formData, setFormData] = useState({
     title: "",
@@ -25,7 +27,9 @@ export default function Home() {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const res = await fetch(`http://localhost:3000/api/post?page=${currentPage}&limit=10`);
+        const res = await fetch(
+          `http://localhost:3000/api/post?page=${currentPage}&limit=10`
+        );
         const data = await res.json();
 
         if (data.data && data.data.posts) {
@@ -43,6 +47,28 @@ export default function Home() {
     fetchPosts();
   }, [currentPage]);
 
+  const handleDeletePost = async (postId) => {
+    try {
+      await deletePost(postId);
+      setAlert({ type: "success", message: "Post deleted" });
+      const res = await fetch(
+        `http://localhost:3000/api/post?page=${currentPage}&limit=10`
+      );
+      const data = await res.json();
+      if (data.data && data.data.posts) {
+        setPosts(data.data.posts);
+        setPagination(data.data.pagination);
+      } else {
+        setPosts(data.data);
+      }
+    } catch (err) {
+      setAlert({
+        type: "error",
+        message: err.message || "Failed to delete post",
+      });
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -54,7 +80,7 @@ export default function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) {
-      alert("Please login to create a post");
+      setAlert({ type: "error", message: "Please login to create a post" });
       return;
     }
 
@@ -87,8 +113,11 @@ export default function Home() {
       });
 
       setIsExpanded(false);
+      setAlert({ type: "success", message: "Post created successfully!" });
 
-      const res = await fetch(`http://localhost:3000/api/post?page=${currentPage}&limit=10`);
+      const res = await fetch(
+        `http://localhost:3000/api/post?page=${currentPage}&limit=10`
+      );
       const data = await res.json();
 
       if (data.data && data.data.posts) {
@@ -98,7 +127,10 @@ export default function Home() {
         setPosts(data.data);
       }
     } catch (err) {
-      alert(err.message || "Failed to create post");
+      setAlert({
+        type: "error",
+        message: err.message || "Failed to create post",
+      });
     } finally {
       setIsCreating(false);
     }
@@ -106,6 +138,15 @@ export default function Home() {
 
   return (
     <div className="home-container">
+      {alert && (
+        <Alert
+          type={alert.type}
+          message={alert.message}
+          onClose={() => setAlert(null)}
+          fixed
+        />
+      )}
+
       <div className="create-post">
         <div
           className="create-post-header"
@@ -202,7 +243,7 @@ export default function Home() {
         {Array.isArray(posts) && posts.length > 0 ? (
           <>
             {posts.map((post) => (
-              <PostCard key={post.id} post={post} />
+              <PostCard key={post.id} post={post} onDelete={handleDeletePost} />
             ))}
             {pagination && (
               <Pagination
