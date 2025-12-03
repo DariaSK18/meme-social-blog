@@ -48,8 +48,8 @@ app.use(
     cookie: {
       httpOnly: true,
       maxAge: 60000 * 60, // one hour
-      sameSite: "lax",
-      secure: false,
+      sameSite: "none",
+      secure: true,
     },
     name: "connect.sid", 
     store: store,
