@@ -119,26 +119,7 @@ export default function PostCard({ post, onDelete }) {
         {post.tags?.map((tag) => (
           <span key={tag.id} onClick={() => navigate(`/?tag=${tag.tag_name}`)}>#{tag.tag_name} </span>
         ))}
-        <div className="post-actions">
-          <Button
-            text={<FontAwesomeIcon icon={faHeart} />}
-            onClick={handleToggleLike}
-          ></Button>{" "}
-          <span>{likesCount}</span>
-          <Button text={<FontAwesomeIcon icon={faComment} />}></Button>{" "}
-          <span>{post.commentsCount}</span>
-          <Button text={<FontAwesomeIcon icon={faShare} />}></Button>
-        </div>
-        <div className="post-info">
-          <span className="post-username">{post.user.username}</span>
-          {post.title && <span className="post-title">{post.title}</span>}
-          <span className="post-description">{post.description}</span>
-        </div>
-        <div className="post-tags">
-          {post.tags?.map((tag) => (
-            <span key={tag.id}>#{tag.tag_name} </span>
-          ))}
-        </div>
+      </div>
       </div>
     </>
   );
