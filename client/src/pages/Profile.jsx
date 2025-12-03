@@ -5,6 +5,7 @@ import { logout as apiLogout, getMe } from "../api/authApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import Button from "../components/Button";
+import "../styles/profile.css";
 
 export default function Profile() {
   const { logout } = useAuth();
@@ -14,9 +15,8 @@ export default function Profile() {
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const res = await getMe()
-        console.log('---res', res);
-        
+        const res = await getMe();
+
         if (res?.data?.user) setProfileData(res.data.user);
         else if (res?.data) setProfileData(res.data);
         else setProfileData(null);
@@ -32,9 +32,9 @@ export default function Profile() {
   const handleLogout = async () => {
     try {
       await apiLogout();
-    }finally{
+    } finally {
       logout();
-    navigate("/");
+      navigate("/");
     }
   };
 
@@ -54,29 +54,55 @@ export default function Profile() {
 
   return (
     <div className="profile">
-      <FontAwesomeIcon icon={faUser} />
+      {profileData.avatar ? (
+        <img src={profileData.avatar} alt="Profile" className="profile-image" />
+      ) : (
+        <FontAwesomeIcon icon={faUser} />
+      )}
+
       <h2>{profileData.username}</h2>
       <p>Email: {profileData.email}</p>
-      <p>Following: {profileData.followingCount || 0}</p>
-      <p>Followers: {profileData.followersCount || 0}</p>
-      <p>Posts: {profileData.memesCount || 0}</p>
+      <div className="profile-stats">
+        <div className="profile-stat-item">
+          <span className="profile-stat-value">
+            {profileData.followingCount || 0}
+          </span>
+          <span className="profile-stat-label">Following</span>
+        </div>
 
-      <div className="profile__actions">
+        <div className="profile-stat-item">
+          <span className="profile-stat-value">
+            {profileData.followersCount || 0}
+          </span>
+          <span className="profile-stat-label">Followers</span>
+        </div>
+
+        <div className="profile-stat-item">
+          <span className="profile-stat-value">
+            {profileData.memesCount || 0}
+          </span>
+          <span className="profile-stat-label">Posts</span>
+        </div>
+      </div>
+
+      <div className="profile-actions">
         <Button
           text={"Change Password"}
           to={"/change-password"}
-          className="profile__logout-btn profile-btn"
-        ></Button>
+          className="profile-logout-btn profile-btn"
+        />
+
         <Button
           text={"Logout"}
           onClick={handleLogout}
-          className="profile__logout-btn profile-btn"
-        ></Button>
+          className="profile-logout-btn profile-btn"
+        />
+
         <Button
           text={"Delete Profile"}
           onClick={handleDelete}
-          className="profile__delete-btn profile-btn"
-        ></Button>
+          className="profile-delete-btn profile-btn"
+        />
       </div>
     </div>
   );
