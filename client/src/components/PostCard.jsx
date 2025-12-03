@@ -10,10 +10,8 @@ import {
 import Button from "../components/Button";
 import { useAuth } from "../context/AuthContext";
 import { toggleLike } from "../api/postApi";
-import { useNavigate } from "react-router-dom";
 import Alert from "./Alert";
 import "../styles/postCard.css";
-
 
 const DEFAULT_POST_IMAGE = "https://i.imgflip.com/1bhk.jpg";
 
@@ -21,10 +19,7 @@ export default function PostCard({ post, onDelete }) {
   const [likesCount, setLikesCount] = useState(post.likesCount);
   const [showConfirmAlert, setShowConfirmAlert] = useState(false);
   const { user } = useAuth();
-  const navigate = useNavigate();
-
   const canDelete = user && post.user_id === user.id;
-
 
   const handleToggleLike = async () => {
     if (!user) return;
@@ -100,26 +95,26 @@ export default function PostCard({ post, onDelete }) {
           />
         </div>
 
-      <div className="post-actions">
-        <Button
-          text={<FontAwesomeIcon icon={faHeart} />}
-          onClick={handleToggleLike}
-        ></Button>{" "}
-        <span>{likesCount}</span>
-        <Button text={<FontAwesomeIcon icon={faComment} />}></Button>{" "}
-        <span>{post.commentsCount}</span>
-        <Button text={<FontAwesomeIcon icon={faShare} />}></Button>
-      </div>
-      <div className="post-info">
-        <span className="post-username">{post.user.username}</span>
-        {post.title && <span className="post-title">{post.title}</span>}
-        <span className="post-description">{post.description}</span>
-      </div>
-      <div className="post-tags">
-        {post.tags?.map((tag) => (
-          <span key={tag.id} onClick={() => navigate(`/?tag=${tag.tag_name}`)}>#{tag.tag_name} </span>
-        ))}
-      </div>
+        <div className="post-actions">
+          <Button
+            text={<FontAwesomeIcon icon={faHeart} />}
+            onClick={handleToggleLike}
+          ></Button>{" "}
+          <span>{likesCount}</span>
+          <Button text={<FontAwesomeIcon icon={faComment} />}></Button>{" "}
+          <span>{post.commentsCount}</span>
+          <Button text={<FontAwesomeIcon icon={faShare} />}></Button>
+        </div>
+        <div className="post-info">
+          <span className="post-username">{post.user.username}</span>
+          {post.title && <span className="post-title">{post.title}</span>}
+          <span className="post-description">{post.description}</span>
+        </div>
+        <div className="post-tags">
+          {post.tags?.map((tag) => (
+            <span key={tag.id}>#{tag.tag_name} </span>
+          ))}
+        </div>
       </div>
     </>
   );
