@@ -1,18 +1,17 @@
 import { Router } from "express";
 import * as postController from "../controllers/postController.mjs";
-import authToken from "../middleware/authToken.mjs";
-import { isAuthor } from "../middleware/isUser.mjs";
 import { validate } from "../middleware/validate.mjs";
 import { postPatch, postValidation } from "../utils/helpers/validation.mjs";
 import { checkSchema } from "express-validator";
+import { isUser, isAuth, isAuthor } from "../middleware/isUser.mjs";
+
 
 const router = Router();
 
 router
   .route("/")
   .get(postController.getAllPosts) // ok
-  .post(
-    authToken,
+  .post(isAuth, 
     checkSchema(postValidation),
     validate,
     postController.createPost
@@ -21,9 +20,9 @@ router
 router
   .route("/:id")
   .get(postController.getOnePost) // ok
-  .patch(authToken, isAuthor, checkSchema(postPatch), validate, postController.updatePost) // ok (tags dont get updated)
-  .delete(authToken, isAuthor, postController.deletePost); // ok
+  .patch(isAuth, isAuthor,  checkSchema(postPatch), validate, postController.updatePost) // ok (tags dont get updated)
+  .delete(isAuth, isAuthor,  postController.deletePost); // ok
 
-router.route("/:id/like").patch(authToken, postController.toggleLike); // ok
+router.route("/:id/like").patch(isAuth,  postController.toggleLike); // ok
 
 export default router;
