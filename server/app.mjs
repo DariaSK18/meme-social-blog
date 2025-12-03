@@ -14,10 +14,11 @@ import signature from "cookie-signature";
 dotenv.config();
 
 const app = express();
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
 app.use(
   cors({
-    origin: "http://localhost:5173", //true
+    origin: FRONTEND_URL, //"http://localhost:5173", //true
     credentials: true,
   })
 );
