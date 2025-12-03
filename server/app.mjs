@@ -5,26 +5,58 @@ import AppError from "./utils/AppError.mjs";
 import routes from "./routes/index.mjs";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-
-// --- test
+import session from "express-session";
+import passport from "./strategies/local-strategy.mjs";
+import SequelizeStore from "connect-session-sequelize";
+import sequelize from "./config/connection.mjs";
+import signature from "cookie-signature";
 
 dotenv.config();
 
 const app = express();
 
-app.use(express.json());
-app.use(cookieParser())
-
-// --- main page test server ---
-app.get("/", (req, res) => {
-  console.log(req.originalUrl);
-});
-// -----------------------------
-
-app.use(cors({
+app.use(
+  cors({
     origin: "http://localhost:5173", //true
-    credentials: true
-}));
+    credentials: true,
+  })
+);
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser(process.env.COOKIE_SECRET));
+
+const SequelizeStoreInstance = SequelizeStore(session.Store);
+
+const store = new SequelizeStoreInstance({
+  db: sequelize,
+});
+store.get = function (sid, callback) {
+  const unsigned = sid.startsWith("s:") ? signature.unsign(sid.slice(2), process.env.COOKIE_SECRET) : sid;
+
+  SequelizeStoreInstance.prototype.get.call(this, unsigned, callback);
+};
+
+await store.sync();
+
+app.use(
+  session({
+    secret: process.env.COOKIE_SECRET,
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+      httpOnly: true,
+      maxAge: 60000 * 60, // one hour
+      sameSite: "lax",
+      secure: false,
+    },
+    name: "connect.sid", 
+    store: store,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/api", routes);
 

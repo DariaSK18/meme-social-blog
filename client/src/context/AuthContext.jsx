@@ -3,26 +3,26 @@ import {
   login as apiLogin,
   register as apiRegister,
   logout as apiLogout,
-  refreshAccessToken,
+  getMe
 } from "../api/authApi";
-import { parseJwt } from "../utils/jwt";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [accessToken, setAccessToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function init() {
       try {
-        const data = await refreshAccessToken();
-        setAccessToken(data.accessToken);
-
-        const decoded = parseJwt(data.data.accessToken);
-        setUser({ id: decoded.id });
-        localStorage.setItem("accessToken", data.accessToken);
+        const res = await getMe()
+        if (res?.data?.user) {
+          setUser(res.data.user);
+        } else if (res?.data) {
+          setUser(res.data);
+        } else {
+          setUser(null);
+        }
       } catch (err) {
         console.error(err);
         setUser(null);
@@ -33,61 +33,40 @@ export function AuthProvider({ children }) {
     init();
   }, []);
 
-  useEffect(() => {
-    if (!accessToken) return;
-
-    const interval = setInterval(async () => {
-      try {
-        const data = await refreshAccessToken();
-        setAccessToken(data.accessToken);
-
-        const decoded = parseJwt(data.data.accessToken);
-        setUser({ id: decoded.id });
-        localStorage.setItem("accessToken", data.accessToken);
-      } catch (err) {
-        console.error(err);
-        setUser(null);
-        setAccessToken(null);
-      }
-    }, 9 * 60 * 1000);
-
-    return () => clearInterval(interval);
-  }, [accessToken]);
-
   // --- login ---
   async function login(email, password) {
-    const data = await apiLogin(email, password);
-
-    setAccessToken(data.accessToken);
-    localStorage.setItem("accessToken", data.data.accessToken);
-
-    const decoded = parseJwt(data.data.accessToken);
-    setUser({ id: decoded.id });
+    const res = await apiLogin(email, password);
+if (res?.data?.user) {
+      setUser(res.data.user);
+      return res.data.user;
+    }
+    throw new Error("Login failed");
   }
 
   // --- register ---
   async function register(username, email, password) {
     await apiRegister(username, email, password);
-    const data = await apiLogin(email, password);
-
-    setAccessToken(data.accessToken);
-    localStorage.setItem("accessToken", data.accessToken);
-
-    const decoded = parseJwt(data.data.accessToken);
-    setUser({ id: decoded.id });
+    const res = await apiLogin(email, password);
+if (res?.data?.user) {
+      setUser(res.data.user);
+      return res.data.user;
+    }
+    throw new Error("Registration succeeded but login failed");
   }
 
   // --- logout ---
   async function logout() {
-    await apiLogout();
-    setUser(null);
-    setAccessToken(null);
-    localStorage.removeItem("accessToken");
+    try {
+      await apiLogout();
+    } catch (err) {
+      console.error("Logout error", err);
+    } finally {
+      setUser(null);
+    }
   }
 
   const value = {
     user,
-    accessToken,
     login,
     register,
     logout,

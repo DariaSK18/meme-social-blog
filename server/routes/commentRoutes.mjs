@@ -1,13 +1,13 @@
 import { Router } from 'express'
 import * as commentController from '../controllers/commentController.mjs'
-import authToken from "../middleware/authToken.mjs";
+import { isAuth } from "../middleware/isUser.mjs";
 
 const router = Router()
 
 router
   .route("/:id")
   .get(commentController.getComments) // ok
-  .post(authToken, commentController.createComment) // ok
-  .delete(authToken, commentController.deleteComment) // ok
+  .post(isAuth, commentController.createComment) // ok
+  .delete(isAuth, commentController.deleteComment) // ok
 
 export default router

@@ -48,21 +48,28 @@ export async function register(username, email, password) {
     return res.json();
 }
 
-// --- refresh token ---
-export async function refreshAccessToken() {
-    const res = await fetch(`${BASE_URL}/api/user/refresh-token`, {
+// --- logout ---
+export async function logout() {
+    const res = await fetch(`${BASE_URL}/api/user/logout`, {
         method: "POST",
         credentials: "include",
     });
-
-    if (!res.ok) throw new Error("Refresh failed");
-
-    return res.json();
+    const json = await res.json();
+  if (!res.ok) {
+    throw new Error(json?.msg || "Logout failed");
+  }
+  return json;
 }
 
-export async function logout() {
-    await fetch(`${BASE_URL}/api/user/logout`, {
-        method: "POST",
-        credentials: "include",
-    });
+// --- get current user (/me) ---
+export async function getMe() {
+  const res = await fetch(`${BASE_URL}/api/user/me`, {
+    method: "GET",
+    credentials: "include",
+  });
+  const json = await res.json();
+  if (!res.ok) {
+    throw new Error(json?.msg || "Not authenticated");
+  }
+  return json;
 }
