@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,12 +8,23 @@ import {
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import "../styles/header.css";
+import Button from "../components/Button";
 
 export default function Header() {
   const { user, logout } = useAuth();
   const location = useLocation();
 
   const isActive = (path) => location.pathname === path;
+  const navigate = useNavigate()
+
+   const handleLogout = async () => {
+      try {
+        await logout();
+      } finally {
+        logout();
+        navigate("/");
+      }
+    };
 
   return (
     <header className="header">
@@ -71,9 +82,9 @@ export default function Header() {
           </div>
         ) : (
           <div className="header-user">
-            <button onClick={logout} className="header-logout-btn">
-              Logout
-            </button>
+            <Button text={"Logout"}
+          onClick={handleLogout} className="header-logout-btn">
+            </Button>
           </div>
         )}
       </div>
