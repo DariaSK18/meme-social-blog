@@ -7,13 +7,13 @@ import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../components/Pagination";
 import Alert from "../components/Alert";
 import "../styles/home.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [isCreating, setIsCreating] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState(null);
   const [alert, setAlert] = useState(null);
   const { user } = useAuth();
@@ -25,7 +25,10 @@ export default function Home() {
     tags: "",
   });
   const location = useLocation();
+  const navigate = useNavigate();
+
   const params = new URLSearchParams(location.search);
+  const currentPage = parseInt(params.get("page")) || 1;
   const search = params.get("search");
   const tag = params.get("tag");
   useEffect(() => {
@@ -57,7 +60,7 @@ export default function Home() {
     }
 
     fetchPosts();
-  }, [currentPage, search, tag]);
+  }, [location.search, currentPage, search, tag]);
 
   const handleDeletePost = async (postId) => {
     try {
@@ -147,6 +150,11 @@ export default function Home() {
       setIsCreating(false);
     }
   };
+   const handlePageChange = (page) => {
+  const params = new URLSearchParams(location.search);
+  params.set("page", page);
+  navigate(`?${params.toString()}`);
+};
 
   return (
     <div className="home-container">
@@ -259,9 +267,9 @@ export default function Home() {
             ))}
             {pagination && (
               <Pagination
-                currentPage={pagination.currentPage}
-                totalPages={pagination.totalPages}
-                onPageChange={setCurrentPage}
+                currentPage={currentPage}
+                totalPages={pagination?.totalPages}
+                onPageChange={handlePageChange}
               />
             )}
           </>
