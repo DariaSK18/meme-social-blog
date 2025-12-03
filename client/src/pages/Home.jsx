@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../components/Pagination";
 import "../styles/home.css";
+import { useLocation } from "react-router-dom";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -21,11 +22,21 @@ export default function Home() {
     image_url: "",
     tags: "",
   });
-
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const search = params.get("search");
+  const tag = params.get("tag");
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const res = await fetch(`http://localhost:3000/api/post?page=${currentPage}&limit=10`);
+        const params = new URLSearchParams();
+        params.append("page", currentPage);
+        params.append("limit", 10);
+        if (search) params.append("search", search);
+        if (tag) params.append("tag", tag);
+
+        const url = `http://localhost:3000/api/post?${params.toString()}`;
+        const res = await fetch(url);
         const data = await res.json();
 
         if (data.data && data.data.posts) {
@@ -41,7 +52,7 @@ export default function Home() {
     }
 
     fetchPosts();
-  }, [currentPage]);
+  }, [currentPage, search, tag]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -88,7 +99,9 @@ export default function Home() {
 
       setIsExpanded(false);
 
-      const res = await fetch(`http://localhost:3000/api/post?page=${currentPage}&limit=10`);
+      const res = await fetch(
+        `http://localhost:3000/api/post?page=${currentPage}&limit=10`
+      );
       const data = await res.json();
 
       if (data.data && data.data.posts) {

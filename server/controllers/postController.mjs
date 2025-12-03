@@ -7,35 +7,54 @@ import MemeTag from "../models/memeTag.mjs";
 import Like from "../models/like.mjs";
 import Comment from "../models/comment.mjs";
 import { sendResponse } from "../utils/helpers/sendResponse.mjs";
+import { Op } from "sequelize";
 
 // --- get all posts ---
 export const getAllPosts = catchAsync(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
+  const { search, tag } = req.query;
 
-  const totalPosts = await Meme.count();
+  const where = {};
+  if (search) where.title = { [Op.like]: `%${search}%` };
 
-  const posts = await Meme.findAll({
+  let postIds = null;
+
+  if (tag) {
+    const taggedPosts = await Meme.findAll({
+      include: [
+        {
+          model: Tag,
+          as: "tags",
+          where: { tag_name: { [Op.like]: `%${tag}%` } },
+          attributes: [],
+          through: { attributes: [] },
+          required: true,
+        },
+      ],
+      attributes: ["id"],
+    });
+    postIds = taggedPosts.map((p) => p.id);
+  }
+
+  const finalWhere = { ...where };
+  if (postIds) finalWhere.id = postIds;
+
+  const { count: totalPosts, rows: posts } = await Meme.findAndCountAll({
+    where: finalWhere,
     include: [
-      {
-        model: Tag,
-        as: "tags",
-        through: { attributes: [] },
-      },
-      {
-        model: User,
-        as: "user",
-        attributes: ["id", "username"],
-      },
+      { model: User, as: "user", attributes: ["id", "username"] },
       { model: Like, as: "likes", attributes: ["id"] },
-      { model: Comment, as: "comments", attributes: ["id"]},
+      { model: Comment, as: "comments", attributes: ["id"] },
+      { model: Tag, as: "tags", through: { attributes: [] } }, 
     ],
     order: [["createdAt", "DESC"]],
     limit,
     offset: (page - 1) * limit,
+    distinct: true,
   });
-  
-  const postsWithCounts = posts.map(post => {
+
+  const postsWithCounts = posts.map((post) => {
     const p = post.toJSON();
     return {
       ...p,
@@ -44,18 +63,17 @@ export const getAllPosts = catchAsync(async (req, res, next) => {
     };
   });
 
-  const totalPages = totalPosts % limit === 0 
-    ? totalPosts / limit 
-    : Math.floor(totalPosts / limit) + 1;
+  const totalPages = Math.ceil(totalPosts / limit);
 
   sendResponse(res, 200, {
     posts: postsWithCounts,
     pagination: {
       currentPage: page,
-      totalPages: totalPages,
+      totalPages,
     },
   });
 });
+
 
 // --- create a post ---
 
