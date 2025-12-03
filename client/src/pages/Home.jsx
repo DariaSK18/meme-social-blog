@@ -4,12 +4,15 @@ import { useAuth } from "../context/AuthContext";
 import { createPost } from "../api/postApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import Pagination from "../components/Pagination";
 import "../styles/home.css";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [isCreating, setIsCreating] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pagination, setPagination] = useState(null);
   const { user } = useAuth();
   const [formData, setFormData] = useState({
     title: "",
@@ -22,18 +25,23 @@ export default function Home() {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const res = await fetch("http://localhost:3000/api/post");
+        const res = await fetch(`http://localhost:3000/api/post?page=${currentPage}&limit=10`);
         const data = await res.json();
-        console.log(data);
 
-        setPosts(data.data);
+        if (data.data && data.data.posts) {
+          setPosts(data.data.posts);
+          setPagination(data.data.pagination);
+        } else {
+          setPosts(data.data);
+        }
       } catch (err) {
         console.error(err);
+        setPosts([]);
       }
     }
 
     fetchPosts();
-  }, []);
+  }, [currentPage]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -80,9 +88,15 @@ export default function Home() {
 
       setIsExpanded(false);
 
-      const res = await fetch("http://localhost:3000/api/post");
+      const res = await fetch(`http://localhost:3000/api/post?page=${currentPage}&limit=10`);
       const data = await res.json();
-      setPosts(data.data);
+
+      if (data.data && data.data.posts) {
+        setPosts(data.data.posts);
+        setPagination(data.data.pagination);
+      } else {
+        setPosts(data.data);
+      }
     } catch (err) {
       alert(err.message || "Failed to create post");
     } finally {
@@ -158,7 +172,7 @@ export default function Home() {
                     id="image_url"
                     name="image_url"
                     type="url"
-                    placeholder="Enter image URL (optional)"
+                    placeholder="Enter image URL"
                     value={formData.image_url}
                     onChange={handleInputChange}
                   />
@@ -174,9 +188,6 @@ export default function Home() {
                     value={formData.tags}
                     onChange={handleInputChange}
                   />
-                  <p className="create-post-tags-hint">
-                    Separate tags with commas
-                  </p>
                 </div>
                 <button type="submit" disabled={isCreating}>
                   {isCreating ? "Creating..." : "Create Post"}
@@ -189,7 +200,18 @@ export default function Home() {
 
       <div className="posts-container">
         {Array.isArray(posts) && posts.length > 0 ? (
-          posts.map((post) => <PostCard key={post.id} post={post} />)
+          <>
+            {posts.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+            {pagination && (
+              <Pagination
+                currentPage={pagination.currentPage}
+                totalPages={pagination.totalPages}
+                onPageChange={setCurrentPage}
+              />
+            )}
+          </>
         ) : (
           <p style={{ textAlign: "center", color: "#666", padding: "40px" }}>
             No posts yet. Be the first to create one!
