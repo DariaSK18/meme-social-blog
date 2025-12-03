@@ -48,8 +48,8 @@ app.use(
     cookie: {
       httpOnly: true,
       maxAge: 60000 * 60, // one hour
-      sameSite: "none",
-      secure: true,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: process.env.NODE_ENV === "production",
     },
     name: "connect.sid", 
     store: store,
