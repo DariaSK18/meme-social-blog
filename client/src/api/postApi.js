@@ -20,3 +20,23 @@ export async function toggleLike(postId) {
   return res.json();
 }
 
+export async function createPost(postData) {
+  const res = await fetch(`${BASE_URL}/api/post`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(postData),
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    if (errorData.msg) {
+      throw new Error(errorData.msg);
+    }
+    throw new Error("Failed to create post");
+  }
+
+  return res.json();
+}

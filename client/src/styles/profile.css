@@ -1,0 +1,105 @@
+.profile {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+  padding: 20px;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+  border: 3px solid #dc4d34;
+}
+
+.profile svg {
+  font-size: 120px;
+  color: #dc4d34;
+  margin-bottom: 20px;
+}
+
+.profile h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 32px;
+  color: #252525;
+}
+
+.profile > p {
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #444;
+}
+
+.profile-stats {
+  display: flex;
+  gap: 30px;
+  margin: 20px 0;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.profile-stat-item {
+  text-align: center;
+}
+
+.profile-stat-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #dc4d34;
+  display: block;
+}
+
+.profile-stat-label {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 400px;
+  margin-top: 30px;
+}
+
+.profile-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  box-sizing: border-box;
+}
+
+.profile-logout-btn {
+  background: #dc4d34;
+}
+
+.profile-logout-btn:hover {
+  background: #ff7f69;
+}
+
+.profile-delete-btn {
+  background: #dc3545;
+}
+
+.profile-delete-btn:hover {
+  background: #c82333;
+}
+
