@@ -158,7 +158,7 @@ export default function Home() {
                     id="image_url"
                     name="image_url"
                     type="url"
-                    placeholder="Enter image URL (optional)"
+                    placeholder="Enter image URL"
                     value={formData.image_url}
                     onChange={handleInputChange}
                   />
@@ -174,9 +174,6 @@ export default function Home() {
                     value={formData.tags}
                     onChange={handleInputChange}
                   />
-                  <p className="create-post-tags-hint">
-                    Separate tags with commas
-                  </p>
                 </div>
                 <button type="submit" disabled={isCreating}>
                   {isCreating ? "Creating..." : "Create Post"}
