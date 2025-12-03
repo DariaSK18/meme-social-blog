@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import "../styles/Login.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -20,8 +21,8 @@ export default function Login() {
   };
 
   return (
-    <div>
-      <div>
+    <div className="login-container">
+      <div className="login-box">
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
           <div>
