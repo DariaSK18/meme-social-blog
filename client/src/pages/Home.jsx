@@ -39,9 +39,9 @@ export default function Home() {
 
         const url = `http://localhost:3000/api/post?${params.toString()}`;
         const res = await fetch(url);
-        const res = await fetch(
-          `http://localhost:3000/api/post?page=${currentPage}&limit=10`
-        );
+        // const res = await fetch(
+        //   `http://localhost:3000/api/post?page=${currentPage}&limit=10`
+        // );
         const data = await res.json();
 
         if (data.data && data.data.posts) {
