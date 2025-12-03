@@ -10,6 +10,11 @@ import { sendResponse } from "../utils/helpers/sendResponse.mjs";
 
 // --- get all posts ---
 export const getAllPosts = catchAsync(async (req, res, next) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+
+  const totalPosts = await Meme.count();
+
   const posts = await Meme.findAll({
     include: [
       {
@@ -26,7 +31,10 @@ export const getAllPosts = catchAsync(async (req, res, next) => {
       { model: Comment, as: "comments", attributes: ["id"]},
     ],
     order: [["createdAt", "DESC"]],
+    limit,
+    offset: (page - 1) * limit,
   });
+  
   const postsWithCounts = posts.map(post => {
     const p = post.toJSON();
     return {
@@ -35,7 +43,18 @@ export const getAllPosts = catchAsync(async (req, res, next) => {
       commentsCount: p.comments.length,
     };
   });
-  sendResponse(res, 200, postsWithCounts);
+
+  const totalPages = totalPosts % limit === 0 
+    ? totalPosts / limit 
+    : Math.floor(totalPosts / limit) + 1;
+
+  sendResponse(res, 200, {
+    posts: postsWithCounts,
+    pagination: {
+      currentPage: page,
+      totalPages: totalPages,
+    },
+  });
 });
 
 // --- create a post ---
