@@ -3,8 +3,6 @@ import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons
 import "../styles/pagination.css";
 
 export default function Pagination({ currentPage, totalPages, onPageChange }) {
-  if (totalPages <= 1) return null;
-
   const getPageNumbers = () => {
     const pages = [];
     const maxVisible = 5;
@@ -33,8 +31,8 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
   };
 
   const pageNumbers = getPageNumbers();
-  const firstPage = pageNumbers[0];
-  const lastPage = pageNumbers[pageNumbers.length - 1];
+  const first = pageNumbers[0];
+  const last = pageNumbers[pageNumbers.length - 1];
 
   return (
     <div className="pagination">
@@ -47,10 +45,11 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
         <FontAwesomeIcon icon={faChevronLeft} />
       </button>
 
-      {firstPage > 1 && (
-        <button className="pagination-btn" onClick={() => onPageChange(1)}>
-          1
-        </button>
+      {first > 1 && (
+        <>
+          <button className="pagination-btn" onClick={() => onPageChange(1)}>1</button>
+          {first > 2 && <span className="pagination-dots">...</span>}
+        </>
       )}
 
       {pageNumbers.map((pageNum) => (
@@ -63,10 +62,13 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
         </button>
       ))}
 
-      {lastPage < totalPages && (
-        <button className="pagination-btn" onClick={() => onPageChange(totalPages)}>
-          {totalPages}
-        </button>
+      {last < totalPages && (
+        <>
+          {last < totalPages - 1 && <span className="pagination-dots">...</span>}
+          <button className="pagination-btn" onClick={() => onPageChange(totalPages)}>
+            {totalPages}
+          </button>
+        </>
       )}
 
       <button
