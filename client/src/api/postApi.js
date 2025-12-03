@@ -1,12 +1,10 @@
 const BASE_URL = "http://localhost:3000";
 
 export async function toggleLike(postId) {
-  debugger
   const res = await fetch(`${BASE_URL}/api/post/${postId}/like`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
     },
     credentials: "include",
   });
