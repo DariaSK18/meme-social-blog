@@ -43,6 +43,11 @@
   cursor: not-allowed;
 }
 
+.pagination-dots {
+  padding: 0 8px;
+  color: #666;
+}
+
 @media (max-width: 480px) {
   .pagination {
     gap: 4px;
