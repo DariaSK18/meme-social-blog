@@ -123,7 +123,7 @@ npm run dev
 ```
 - Backend
 ```bash
-npm start dev
+npm run dev
 ```
 
 7. Open your browser and go to:
