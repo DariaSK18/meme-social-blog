@@ -77,7 +77,7 @@ npm install
 ```bash
 mysql -u root -p
 ```
-inside MySQL:
+- inside MySQL:
 ```bash
 source server/db/schema.sql
 quit;
@@ -128,11 +128,11 @@ npm run dev
 
 7. Open your browser and go to:
 
-Frontend runs on 
+- Frontend runs on 
 ```bash
 http://localhost:5173
 ```
-Backend runs on 
+- Backend runs on 
 ```bash
 http://0.0.0.0:3000 
 (depending on your .env)
