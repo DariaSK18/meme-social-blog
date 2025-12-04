@@ -13,10 +13,11 @@ import { Op } from "sequelize";
 export const getAllPosts = catchAsync(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
-  const { search, tag } = req.query;
+  const { search, tag, category } = req.query;
 
   const where = {};
   if (search) where.title = { [Op.like]: `%${search}%` };
+  if (category) where.category = category;
 
   let postIds = null;
 
