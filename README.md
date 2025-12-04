@@ -1,71 +1,156 @@
 # Meme Social Blog
 
+**Meme Social Blog** is a full-stack web application built with **Node.js**, **Express**, **MySql**, **Sequelize**, **React**, and **Vanilla JavaScript** for posting and viewing memes. Users can register, login, manage their profiles, upload memes, deleting, like, comment users and their own posts and explore content created by others. The platform features a modern UI with search, tags, and date formatting for posts.
 
-Meme Social Blog is a Meme sharing app for artists, developers and any kind of users built with React for the frontend and a Sequelize/Node/MySQL/Cloudinary backend. 
-This application provides a robust platform for everyone to share and upload their memes.
+Deployed on Render: [https://meme-social-blog.onrender.com/](https://meme-social-blog.onrender.com/)
 
-We developed essential components such as:
-1. **Authentication**: We implemented a user login, logout, and registration system. 
-2. **User Interaction**: We implemented data input forms, search bar, pagination and APIs.
+---
 
+## Features:
 
-## Features
-React-powered frontend for a dynamic user experience
-Sequelize ORM for seamless database interactions
-MySQL backend for efficient data storage 
-Cloudinary to store uploaded pictures
-Node.js server for handling API requests
-Full-stack integration with streamlined development workflow
+- User authentication (register, login, logout), passwords are hashed with bcrypt
+- Password change and profile deletion
+- **CRUD operations** for meme posts (Create, Read, Update, Delete)
+- MySQL database managed through Sequelize ORM.
+- Clear client–server architecture (frontend + backend). 
+- Optional seed data for testing and development. 
+- Display the latest 10 posts on the homepage (using pagination)
+- Blog tags and search functionality
+- **User session management** with cookies
+- Responsive UI
+- Date formatting using dayjs
 
-## Installation
-Follow these steps to install and set up Meme Social Blog locally:
+---
 
-### 1. Clone the Repository
-``` bash
+## Technologies Used:
+
+**Frontend:**  
+- React  
+- JavaScript / JSX  
+- CSS
+
+**Backend:**  
+- Node.js
+- Express
+- Sequelize ORM
+- MySQL
+
+**Authentication:** 
+- Passport.js
+- bcrypt
+- Middleware for validation and error handling
+
+**Deployment:**
+- Render.com
+
+**Other:**  
+- Environment variables with `.env`  
+- npm scripts for development and production  
+- Seed data utilities 
+
+---
+
+## Installation & Setup:
+
+1. Clone the repository:
+
+```bash
 git clone https://github.com/MemeSocialTeam/meme-social-blog.git
-cd MemesArt
+cd meme-social-blog
 ```
 
-### 2. Create the Database
-Open a terminal and enter MySQL:
-``` bash
-mysql -u root -p
+2. Install dependencies:
+
+- Backend
+```bash
+cd server
+npm install
 ```
-Enter your MySQL password when prompted, then create the database by running:
-
-source server/db/schema.sql;
-quit;
-
-### 3. Install Dependencies
-Run the following command in the root directory to install dependencies for both server and client:
-``` bash
+- Frontend
+```bash
+cd client
 npm install
 ```
 
-### 4. Set up Environment Variables
-Copy .env.example file in the server folder, to cerate .env files. In the server folder, ** change your MySQL password **
+# 3. Create and configure the database:
 
-> DB_PASSWORD=!!!PASSWORD!!!
+```bash
+mysql -u root -p
+```
+inside MySQL:
+```bash
+source server/db/schema.sql
+quit;
+```
 
-### 5. Seed the Database (Optional)
-If you want to populate the database with sample data, run:
-``` bash
+# 4. Create a .env file in the client and server directory and add (use .env.example files to set it up):
+
+- Frontend
+```bash
+VITE_API_URL=your_localhost_url
+```
+- Backend
+```bash
+SECRET_KEY=!!!SECRET!!!
+DB_DATABASE=meme_social_db
+DB_USERNAME=root
+DB_PASSWORD=!!!PASSWORD!!!
+DB_HOST=localhost
+DB_DIALECT=mysql
+DB_PORT=3306
+
+COOKIE_SECRET==!!!SECRET!!!
+
+FRONTEND_URL=your_localhost
+NODE_ENV=development
+
+CLOUDINARY_API_KEY=!!!SECRET!!!
+CLOUDINARY_API_SECRET=!!!SECRET!!!
+CLOUDINARY_CLOUD_NAME=!!!SECRET!!!
+```
+
+# 5. (Optional) Seed the database:
+
+```bash
 npm run seed
 ```
 
-### 6. Start the Application
-Run the following command to start the development server:
-``` bash
+# 6. Start the server and client:
+
+- Frontend
+```bash
 npm run dev
 ```
+- Backend
+```bash
+npm start dev
+```
 
-The application should now be running locally.
+# 7. Open your browser and go to:
 
-## Usage
-- Open your browser and navigate to (http://localhost:5173) to access the Meme Social Blog application.
-- Explore features such as uploading memes, give likes and share your favourite meme.
-The Sequelize/NodeJS backend can be accessed via (http://0.0.0.0:3000)
-Contributing
+Frontend runs on 
+```bash
+http://localhost:5173
+```
+Backend runs on 
+```bash
+http://0.0.0.0:3000 
+(depending on your .env)
+```
+---
+
+## Future Improvements
+
+- Implement user profiles with avatars and personal pages
+- Add follower/friends system to build user connections
+- Add notifications (new comments, likes, followers, etc.)
+- Add direct messages or chat between users
+- Add report system for inappropriate content 
+- Add unit tests, integration tests, and API tests
+- Deploy full CI/CD pipeline (GitHub Actions) 
+
+---
+
 Feel free to submit issues and pull requests to improve Meme Social Blog. Contributions are welcome!
 
-Happy Meme-ing! Happy socialising!
+**Happy Meme-ing! Happy socialising!**
