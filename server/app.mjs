@@ -24,8 +24,9 @@ app.use(
 );
 
 app.use(express.json());
+
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser(process.env.COOKIE_SECRET));
 
 const SequelizeStoreInstance = SequelizeStore(session.Store);
 
