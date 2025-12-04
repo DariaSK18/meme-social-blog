@@ -18,7 +18,7 @@ const FRONTEND_URL = process.env.FRONTEND_URL;
 
 app.use(
   cors({
-    origin: `https://meme-social-blog.onrender.com`, //"http://localhost:5173", //true
+    origin: FRONTEND_URL, //"http://localhost:5173", //true
     credentials: true,
   })
 );
