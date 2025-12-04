@@ -31,6 +31,7 @@ export default function Home() {
   const currentPage = parseInt(params.get("page")) || 1;
   const search = params.get("search");
   const tag = params.get("tag");
+  const category = params.get("category");
   useEffect(() => {
     async function fetchPosts() {
       try {
@@ -39,6 +40,7 @@ export default function Home() {
         params.append("limit", 10);
         if (search) params.append("search", search);
         if (tag) params.append("tag", tag);
+        if (category) params.append("category", category);
 
         const url = `${import.meta.env.VITE_API_URL}/api/post?${params.toString()}`;
         const res = await fetch(url);
@@ -57,7 +59,7 @@ export default function Home() {
     }
 
     fetchPosts();
-  }, [location.search, currentPage, search, tag]);
+  }, [location.search, currentPage, search, tag, category]);
 
   const handleDeletePost = async (postId) => {
     try {
