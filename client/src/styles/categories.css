@@ -6,13 +6,13 @@
 
 .categories-header {
   text-align: center;
-  margin-bottom: 30px;
 }
 
 .categories-header h1 {
   font-size: 32px;
   color: #dc4d34;
   font-weight: 600;
+  margin: 0;
 }
 
 .categories-empty {
@@ -26,6 +26,7 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
 }
+
 
 .category-card {
   background: white;

@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTags } from "@fortawesome/free-solid-svg-icons";
 import { getCategories } from "../api/categoryApi";
 import "../styles/categories.css";
+import SpotlightCard from '../component/SpotlightCard';
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
@@ -27,10 +28,13 @@ export default function Categories() {
 
   return (
     <div className="categories-container">
-      <div className="categories-header">
+      <SpotlightCard className="custom-spotlight-card" spotlightColor="rgba(0, 229, 255, 0.2)">
+       <div className="categories-header">
         <h1>Categories</h1>
       </div>
 
+  </SpotlightCard>
+   
       {categories.length === 0 ? (
         <div className="categories-empty">
           <p>No categories available yet</p>
