@@ -118,7 +118,7 @@ export default function PostCard({ post, onDelete }) {
           {post.tags?.map((tag) => (
             <span
               key={tag.id}
-              onClick={() => navigate(`/?tag=${tag.tag_name}`)}
+              onClick={() => navigate(`/?search=${tag.tag_name}`)}
             >
               #{tag.tag_name}{" "}
             </span>
