@@ -15,7 +15,7 @@ import Alert from "./Alert";
 import CommentsPopup from "./CommentsPopup";
 import "../styles/postCard.css";
 
-const DEFAULT_POST_IMAGE = "https://i.imgflip.com/1bhk.jpg";
+const DEFAULT_POST_IMAGE = "https://freesvg.org/img/Troll-Face.png";
 
 export default function PostCard({ post, onDelete }) {
   const [likesCount, setLikesCount] = useState(post.likesCount);

@@ -1,32 +1,61 @@
 [
   {
-    "title": "Distracted Boyfriend",
-    "description": "When you see a new meme format but you're already using the old one",
+    "title": "When you buy premium but still get buffering 😅",
+    "description": "Me thinking I saved money by buying fast internet — still watching the loading circle",
     "category": "Reaction",
-    "image_url": "https://i.imgflip.com/1ur9b0.jpg",
+    "image_url": "https://i.pinimg.com/736x/22/98/58/229858967ad986226fcf2d9d65e1599a.jpg",
     "user_id": 1
   },
+
   {
     "title": "Grumpy Cat",
     "description": "Grumpy Cat's reaction to Monday mornings",
     "category": "Animals",
-    "image_url": "https://i.imgflip.com/1bhk.jpg",
+    "image_url": "https://media.cnn.com/api/v1/images/stellar/prod/190517103414-01-grumpy-cat-file-restricted.jpg?q=w_3000,h_2049,x_0,y_0,c_fill",
     "user_id": 2
   },
+   
   {
     "title": "Success Kid",
     "description": "When your meme gets 1000 likes",
     "category": "Wholesome",
-    "image_url": "https://i.imgflip.com/1bh8.jpg",
+    "image_url": "https://www.telegraph.co.uk/multimedia/archive/03596/Success_Kid_3596018b.jpg",
     "user_id": 3
   },
+ 
   {
+    "title": "Surprised Pikachu",
+    "description": "When you realize you've been scrolling memes for 3 hours",
+    "category": "Reaction",
+    "image_url": "https://miro.medium.com/0*45EL1rU3FiAbGAI_",
+    "user_id": 6
+  },
+ 
+  {
+    "title": "Two Buttons",
+    "description": "Choosing between posting a meme or doing homework",
+    "category": "Choices",
+    "image_url": "https://content.imageresizer.com/images/memes/Cat-pressing-two-buttons-meme-1.jpg",
+    "user_id": 8
+  },
+ 
+  
+  {
+    "title": "Is This a Pigeon?",
+    "description": "When someone asks if this is a meme",
+    "category": "Anime",
+    "image_url": "https://imageio.forbes.com/blogs-images/olliebarder/files/2018/05/pigeon_meme_fighbird-1200x806.jpg?format=jpg&height=900&width=1600&fit=bounds",
+    "user_id": 9
+  },
+
+   {
     "title": "Drake Hotline Bling",
     "description": "Drake rejecting homework, approving memes",
     "category": "Reaction",
     "image_url": "https://i.imgflip.com/30b1gx.jpg",
     "user_id": 4
   },
+
   {
     "title": "Ancient Aliens",
     "description": "I'm not saying it was aliens... but it was aliens. This meme format? Definitely aliens.",
@@ -35,38 +64,17 @@
     "user_id": 5
   },
   {
-    "title": "Surprised Pikachu",
-    "description": "When you realize you've been scrolling memes for 3 hours",
-    "category": "Reaction",
-    "image_url": "https://i.imgflip.com/2kbn1e.jpg",
-    "user_id": 6
-  },
-  {
-    "title": "This Is Fine",
-    "description": "Me trying to explain memes to my parents",
-    "category": "Comics",
-    "image_url": "https://i.imgflip.com/26am.jpg",
+    "title": "Mocking Spongebob",
+    "description": "When you have to repeat what someone said in a silly voice",
+    "category": "Cartoons",
+    "image_url": "https://i.imgflip.com/1otk96.jpg",
     "user_id": 7
   },
   {
-    "title": "Two Buttons",
-    "description": "Choosing between posting a meme or doing homework",
-    "category": "Choices",
-    "image_url": "https://i.imgflip.com/1g8my4.jpg",
-    "user_id": 8
-  },
-  {
-    "title": "Is This a Pigeon?",
-    "description": "When someone asks if this is a meme",
-    "category": "Anime",
-    "image_url": "https://i.imgflip.com/1otk96.jpg",
-    "user_id": 9
-  },
-  {
-    "title": "One Does Not Simply",
-    "description": "One does not simply stop scrolling memes",
-    "category": "Movies",
-    "image_url": "https://i.imgflip.com/261o3j.jpg",
+    "title": "Distracted Boyfriend",
+    "description": "When you see a new meme format and forget about the old one",
+    "category": "Reaction",
+    "image_url": "https://i.imgflip.com/1ur9b0.jpg",
     "user_id": 10
   }
 ]
