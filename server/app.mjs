@@ -24,8 +24,7 @@ app.use(
 );
 
 app.use(express.json());
-
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.urlencoded({ extended: true }));
 
 const SequelizeStoreInstance = SequelizeStore(session.Store);
@@ -34,7 +33,9 @@ const store = new SequelizeStoreInstance({
   db: sequelize,
 });
 store.get = function (sid, callback) {
-  const unsigned = sid.startsWith("s:") ? signature.unsign(sid.slice(2), process.env.COOKIE_SECRET) : sid;
+  const unsigned = sid.startsWith("s:")
+    ? signature.unsign(sid.slice(2), process.env.COOKIE_SECRET)
+    : sid;
 
   SequelizeStoreInstance.prototype.get.call(this, unsigned, callback);
 };
@@ -52,7 +53,7 @@ app.use(
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       secure: process.env.NODE_ENV === "production",
     },
-    name: "connect.sid", 
+    name: "connect.sid",
     store: store,
   })
 );
