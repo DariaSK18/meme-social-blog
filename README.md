@@ -72,7 +72,7 @@ cd client
 npm install
 ```
 
-# 3. Create and configure the database:
+3. Create and configure the database:
 
 ```bash
 mysql -u root -p
@@ -83,7 +83,7 @@ source server/db/schema.sql
 quit;
 ```
 
-# 4. Create a .env file in the client and server directory and add (use .env.example files to set it up):
+4. Create a .env file in the client and server directory and add (use .env.example files to set it up):
 
 - Frontend
 ```bash
@@ -109,13 +109,13 @@ CLOUDINARY_API_SECRET=!!!SECRET!!!
 CLOUDINARY_CLOUD_NAME=!!!SECRET!!!
 ```
 
-# 5. (Optional) Seed the database:
+5. (Optional) Seed the database:
 
 ```bash
 npm run seed
 ```
 
-# 6. Start the server and client:
+6. Start the server and client:
 
 - Frontend
 ```bash
@@ -126,7 +126,7 @@ npm run dev
 npm start dev
 ```
 
-# 7. Open your browser and go to:
+7. Open your browser and go to:
 
 Frontend runs on 
 ```bash
