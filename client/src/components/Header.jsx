@@ -10,7 +10,7 @@ import {
 import "../styles/header.css";
 import Button from "../components/Button";
 import { useState } from "react";
-import SpotlightCard from '../component/SpotlightCard';
+import GradientText from '../component/GradientText'
 
 export default function Header() {
   const { user, logout } = useAuth();
@@ -39,8 +39,14 @@ export default function Header() {
     <header className="header">
       <div className="header-left">
         <Link to="/" className="header-logo">
-        <SpotlightCard className="custom-spotlight-card new-styles" spotlightColor="rgba(0, 229, 255, 0.2)">
-          MemeSocial</SpotlightCard>
+        <GradientText
+  colors={["#f21c08ff", "#dc0606ff", "#e87400ff", "#e36d23ff", "#fd0b0bff"]}
+  animationSpeed={3}
+  showBorder={false}
+  className="custom-class"
+>
+  MemeSocial
+          </GradientText>
         </Link>
         <nav className="header-nav">
           <Link

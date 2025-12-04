@@ -39,8 +39,9 @@
 }
 
 .category-card:hover {
-  border-color: #dc4d34;
-  transform: translateY(-4px);
+  /* border-color: #dc4d34; */
+  /* transform: translateY(-4px); */
+  
 }
 
 .category-icon {

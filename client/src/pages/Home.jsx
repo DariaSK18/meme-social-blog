@@ -9,6 +9,10 @@ import Alert from "../components/Alert";
 import "../styles/home.css";
 import { useLocation, useNavigate } from "react-router-dom";
 
+import DotGrid from "../component/DotGrid";
+import ElectricBorder from "../component/ElectricBorder";
+import TextType from '../component/TextType';
+
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [isCreating, setIsCreating] = useState(false);
@@ -42,7 +46,9 @@ export default function Home() {
         if (tag) params.append("tag", tag);
         if (category) params.append("category", category);
 
-        const url = `${import.meta.env.VITE_API_URL}/api/post?${params.toString()}`;
+        const url = `${
+          import.meta.env.VITE_API_URL
+        }/api/post?${params.toString()}`;
         const res = await fetch(url);
         const data = await res.json();
 
@@ -149,134 +155,186 @@ export default function Home() {
       setIsCreating(false);
     }
   };
-   const handlePageChange = (page) => {
-  const params = new URLSearchParams(location.search);
-  params.set("page", page);
-  navigate(`?${params.toString()}`);
-};
+  const handlePageChange = (page) => {
+    const params = new URLSearchParams(location.search);
+    params.set("page", page);
+    navigate(`?${params.toString()}`);
+  };
 
   return (
-    <div className="home-container">
-      {alert && (
-        <Alert
-          type={alert.type}
-          message={alert.message}
-          onClose={() => setAlert(null)}
-          fixed
-        />
-      )}
-
-      <div className="create-post">
-        <div
-          className="create-post-header"
-          onClick={() => setIsExpanded(!isExpanded)}
-          style={{ cursor: "pointer" }}
-        >
-          <h2>Create a Post</h2>
-          <FontAwesomeIcon
-            icon={isExpanded ? faChevronUp : faChevronDown}
-            className="create-post-toggle-icon"
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        position: "relative",
+        zIndex: 1,
+      }}
+    >
+      <DotGrid
+        dotSize={1.5}
+        gap={18}
+        baseColor="#ff0707ff"
+        activeColor="#FFF"
+        proximity={80}
+        shockRadius={150}
+        shockStrength={5}
+        resistance={750}
+        returnDuration={1.5}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 0,
+        }}
+      />
+      <div
+        className="home-container"
+        style={{
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        {alert && (
+          <Alert
+            type={alert.type}
+            message={alert.message}
+            onClose={() => setAlert(null)}
+            fixed
           />
-        </div>
-        {isExpanded && (
-          <>
-            {!user ? (
-              <p
-                style={{ textAlign: "center", color: "#666", padding: "20px" }}
-              >
-                Please{" "}
-                <a href="/login" style={{ color: "#dc4d34" }}>
-                  login
-                </a>{" "}
-                to create a post
-              </p>
-            ) : (
-              <form onSubmit={handleSubmit}>
-                <div>
-                  <label htmlFor="title">Title *</label>
-                  <input
-                    id="title"
-                    name="title"
-                    type="text"
-                    placeholder="Enter post title"
-                    value={formData.title}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="description">Description *</label>
-                  <textarea
-                    id="description"
-                    name="description"
-                    placeholder="What's on your mind?"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="category">Category</label>
-                  <input
-                    id="category"
-                    name="category"
-                    type="text"
-                    placeholder="Enter category (optional)"
-                    value={formData.category}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="image_url">Image URL</label>
-                  <input
-                    id="image_url"
-                    name="image_url"
-                    type="url"
-                    placeholder="Enter image URL"
-                    value={formData.image_url}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="tags">Tags</label>
-                  <input
-                    id="tags"
-                    name="tags"
-                    type="text"
-                    className="create-post-tags-input"
-                    placeholder="funny, meme, viral (comma separated)"
-                    value={formData.tags}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <button type="submit" disabled={isCreating}>
-                  {isCreating ? "Creating..." : "Create Post"}
-                </button>
-              </form>
-            )}
-          </>
         )}
-      </div>
 
-      <div className="posts-container">
-        {Array.isArray(posts) && posts.length > 0 ? (
-          <>
-            {posts.map((post) => (
-              <PostCard key={post.id} post={post} onDelete={handleDeletePost} />
-            ))}
-            {pagination && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={pagination?.totalPages}
-                onPageChange={handlePageChange}
-              />
-            )}
-          </>
-        ) : (
-          <p style={{ textAlign: "center", color: "#666", padding: "40px" }}>
-            No posts yet. Be the first to create one!
-          </p>
-        )}
+        <div className="create-post">
+          <div
+            className="create-post-header"
+            onClick={() => setIsExpanded(!isExpanded)}
+            style={{ cursor: "pointer" }}
+          >
+            <h2><TextType 
+  text={["Create a Post"]}
+  typingSpeed={75}
+  pauseDuration={1500}
+  showCursor={true}
+  cursorCharacter="..."
+/>
+            </h2>
+            <FontAwesomeIcon
+              icon={isExpanded ? faChevronUp : faChevronDown}
+              className="create-post-toggle-icon"
+            />
+          </div>
+          {isExpanded && (
+            <>
+              {!user ? (
+                <p
+                  style={{
+                    textAlign: "center",
+                    color: "#666",
+                    padding: "20px",
+                  }}
+                >
+                  Please{" "}
+                  <a href="/login" style={{ color: "#dc4d34" }}>
+                    login
+                  </a>{" "}
+                  to create a post
+                </p>
+              ) : (
+                <form onSubmit={handleSubmit}>
+                  <div>
+                    <label htmlFor="title">Title *</label>
+                    <input
+                      id="title"
+                      name="title"
+                      type="text"
+                      placeholder="Enter post title"
+                      value={formData.title}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="description">Description *</label>
+                    <textarea
+                      id="description"
+                      name="description"
+                      placeholder="What's on your mind?"
+                      value={formData.description}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="category">Category</label>
+                    <input
+                      id="category"
+                      name="category"
+                      type="text"
+                      placeholder="Enter category (optional)"
+                      value={formData.category}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="image_url">Image URL</label>
+                    <input
+                      id="image_url"
+                      name="image_url"
+                      type="url"
+                      placeholder="Enter image URL"
+                      value={formData.image_url}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="tags">Tags</label>
+                    <input
+                      id="tags"
+                      name="tags"
+                      type="text"
+                      className="create-post-tags-input"
+                      placeholder="funny, meme, viral (comma separated)"
+                      value={formData.tags}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <button type="submit" disabled={isCreating}>
+                    {isCreating ? "Creating..." : "Create Post"}
+                  </button>
+                </form>
+              )}
+            </>
+          )}
+        </div>
+
+        <div className="posts-container">
+          {Array.isArray(posts) && posts.length > 0 ? (
+            <>
+              {posts.map((post) => (
+                
+                 
+
+                  <PostCard
+                    key={post.id}
+                    post={post}
+                    onDelete={handleDeletePost}
+                  />
+              ))}
+              {pagination && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={pagination?.totalPages}
+                  onPageChange={handlePageChange}
+                />
+              )}
+            </>
+          ) : (
+            <p style={{ textAlign: "center", color: "#666", padding: "40px" }}>
+              No posts yet. Be the first to create one!
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
