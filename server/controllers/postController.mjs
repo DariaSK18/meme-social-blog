@@ -13,21 +13,23 @@ import { Op } from "sequelize";
 export const getAllPosts = catchAsync(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
-  const { search, tag, category } = req.query;
+  const { search, category } = req.query;
 
   const where = {};
-  if (search) where.title = { [Op.like]: `%${search}%` };
+
   if (category) where.category = category;
 
-  let postIds = null;
+  let searchCondition = [];
 
-  if (tag) {
+  if (search) {
+    searchCondition.push({ title: { [Op.like]: `%${search}%` } });
+
     const taggedPosts = await Meme.findAll({
       include: [
         {
           model: Tag,
           as: "tags",
-          where: { tag_name: { [Op.like]: `%${tag}%` } },
+          where: { tag_name: { [Op.like]: `%${search}%` } },
           attributes: [],
           through: { attributes: [] },
           required: true,
@@ -35,14 +37,16 @@ export const getAllPosts = catchAsync(async (req, res, next) => {
       ],
       attributes: ["id"],
     });
-    postIds = taggedPosts.map((p) => p.id);
+    if (taggedPosts.length > 0) {
+      const postIds = taggedPosts.map((p) => p.id);
+      searchCondition.push({ id: { [Op.in]: postIds } });
+    }
+    if (searchCondition.length > 0) {
+      where[Op.or] = searchCondition;
+    }
   }
-
-  const finalWhere = { ...where };
-  if (postIds) finalWhere.id = postIds;
-
   const { count: totalPosts, rows: posts } = await Meme.findAndCountAll({
-    where: finalWhere,
+    where,
     include: [
       { model: User, as: "user", attributes: ["id", "username"] },
       { model: Like, as: "likes", attributes: ["id"] },
