@@ -10,6 +10,7 @@ import {
 import "../styles/header.css";
 import Button from "../components/Button";
 import { useState } from "react";
+import SpotlightCard from '../component/SpotlightCard';
 
 export default function Header() {
   const { user, logout } = useAuth();
@@ -38,7 +39,8 @@ export default function Header() {
     <header className="header">
       <div className="header-left">
         <Link to="/" className="header-logo">
-          MemeSocial
+        <SpotlightCard className="custom-spotlight-card new-styles" spotlightColor="rgba(0, 229, 255, 0.2)">
+          MemeSocial</SpotlightCard>
         </Link>
         <nav className="header-nav">
           <Link

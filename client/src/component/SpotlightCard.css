@@ -29,4 +29,16 @@
   opacity: 0.6;
 }
 
+.new-styles {
+    position: relative;
+    border-radius: 0.5rem;
+    background-color: #ffffff;
+    border: none;
+    padding: 0.5rem 1rem;
+    overflow: hidden;
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+    --spotlight-color: rgba(229, 102, 34, 0.05);
+    margin-bottom: 0;
+}
 
