@@ -5,10 +5,6 @@
   },
   {
     "meme_id": 1,
-    "tag_id": 8
-  },
-  {
-    "meme_id": 1,
     "tag_id": 9
   },
   {
@@ -16,16 +12,8 @@
     "tag_id": 12
   },
   {
-    "meme_id": 1,
-    "tag_id": 14
-  },
-  {
     "meme_id": 2,
     "tag_id": 2
-  },
-  {
-    "meme_id": 2,
-    "tag_id": 8
   },
   {
     "meme_id": 2,
@@ -36,40 +24,16 @@
     "tag_id": 11
   },
   {
-    "meme_id": 2,
-    "tag_id": 13
-  },
-  {
     "meme_id": 3,
     "tag_id": 3
-  },
-  {
-    "meme_id": 3,
-    "tag_id": 8
   },
   {
     "meme_id": 3,
     "tag_id": 9
   },
   {
-    "meme_id": 3,
-    "tag_id": 10
-  },
-  {
-    "meme_id": 3,
-    "tag_id": 13
-  },
-  {
     "meme_id": 4,
     "tag_id": 1
-  },
-  {
-    "meme_id": 4,
-    "tag_id": 5
-  },
-  {
-    "meme_id": 4,
-    "tag_id": 8
   },
   {
     "meme_id": 4,
@@ -85,19 +49,7 @@
   },
   {
     "meme_id": 5,
-    "tag_id": 8
-  },
-  {
-    "meme_id": 5,
-    "tag_id": 9
-  },
-  {
-    "meme_id": 5,
     "tag_id": 12
-  },
-  {
-    "meme_id": 5,
-    "tag_id": 14
   },
   {
     "meme_id": 6,
@@ -106,18 +58,6 @@
   {
     "meme_id": 6,
     "tag_id": 8
-  },
-  {
-    "meme_id": 6,
-    "tag_id": 9
-  },
-  {
-    "meme_id": 6,
-    "tag_id": 10
-  },
-  {
-    "meme_id": 6,
-    "tag_id": 13
   },
   {
     "meme_id": 7,
@@ -129,31 +69,11 @@
   },
   {
     "meme_id": 7,
-    "tag_id": 8
-  },
-  {
-    "meme_id": 7,
-    "tag_id": 9
-  },
-  {
-    "meme_id": 7,
     "tag_id": 13
   },
   {
     "meme_id": 8,
     "tag_id": 6
-  },
-  {
-    "meme_id": 8,
-    "tag_id": 8
-  },
-  {
-    "meme_id": 8,
-    "tag_id": 9
-  },
-  {
-    "meme_id": 8,
-    "tag_id": 10
   },
   {
     "meme_id": 8,
@@ -168,32 +88,12 @@
     "tag_id": 8
   },
   {
-    "meme_id": 9,
-    "tag_id": 9
-  },
-  {
-    "meme_id": 9,
-    "tag_id": 10
-  },
-  {
-    "meme_id": 9,
-    "tag_id": 13
-  },
-  {
     "meme_id": 10,
     "tag_id": 1
   },
   {
     "meme_id": 10,
-    "tag_id": 8
-  },
-  {
-    "meme_id": 10,
     "tag_id": 9
-  },
-  {
-    "meme_id": 10,
-    "tag_id": 13
   },
   {
     "meme_id": 10,
